@@ -19,7 +19,7 @@ public class Register2Activty extends RoboActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register_activty);
+        setContentView(R.layout.activity_register2_activty);
         
         okButton.setOnClickListener(new View.OnClickListener() {
 			

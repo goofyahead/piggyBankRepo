@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <resources>
+        <color name="stroke">#a19f9f</color>
+        <color name="basic_button_top">#f49ac1</color>
+        <color name="basic_button_bottom">#d95990</color>
+        <color name="basic_button_font">#ffffff</color>
+        <color name="background_top">#d6d6d6</color>
+        <color name="background_bottom">#fefefe</color>
+        <color name="grey_text">#646262</color>
+        <color name="basic_edit_default">#d6d6d6</color>
+        <color name="basic_edit_focused">#ffffff</color>
+        <color name="pink_text">#d95990</color>
+    </resources>

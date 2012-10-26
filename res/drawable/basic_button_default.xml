@@ -6,8 +6,8 @@
         android:radius="8dp" />
     <gradient
         android:angle="270"
-        android:endColor="#bababa"
-        android:startColor="#d5d5d5"
+         android:startColor="@color/basic_button_top"
+        android:endColor="@color/basic_button_bottom"
         android:type="linear"  />
     <stroke
         android:width="@dimen/strokewidth"
