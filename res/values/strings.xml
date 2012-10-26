@@ -1,0 +1,12 @@
+<resources>
+
+    <string name="app_name">piggyBank</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_browse_pigs_activicity">BrowsePigsActivicity</string>
+    <string name="title_activity_splash_screen">SplashScreen</string>
+    <string name="title_activity_create_piggy">Create Piggy</string>
+    <string name="title_activity_register_activty">Register</string>
+    <string name="title_activity_detail_piggy">Detail Piggy</string>
+
+</resources>
