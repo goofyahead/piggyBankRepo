@@ -23,5 +23,7 @@
     <string name="country">Country</string>
     <string name="next">Next</string>
     <string name="register">Register</string>
+    <string name="put_money_in_piggybank">Deposit</string>
+    <string name="amount">Amount</string>
 
 </resources>
