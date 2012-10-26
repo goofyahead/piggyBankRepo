@@ -16,29 +16,24 @@ public class Piggy {
     private String number;
     private float amount;
     private Date expiration;
-    private String objetive;
+    private String objectiveName;
+    private float objectiveAmount;
     private List<String> shared;
     private int type;
     private int id;
 
-    public Piggy(String name, String number, float amount, Date expiration, String objetive, int type, List<String> shared) {
+    public Piggy(String name, String number, float amount, Date expiration, String objetiveName, int type, List<String> shared, float objectiveAmount) {
         super();
         this.name = name;
         this.number = number;
         this.amount = amount;
         this.shared = shared;
         this.expiration = expiration;
-        this.objetive = objetive;
+        this.objectiveName = objetiveName;
         this.type = type;
+        this.objectiveAmount = objectiveAmount;
     }
 
-    public String getObjetive() {
-        return objetive;
-    }
-
-    public void setObjetive(String objetive) {
-        this.objetive = objetive;
-    }
 
     public int getType() {
         return type;
@@ -95,4 +90,21 @@ public class Piggy {
     public void setId(int id) {
         this.id = id;
     }
+    public String getObjectiveName() {
+        return objectiveName;
+    }
+
+    public void setObjectiveName(String objectiveName) {
+        this.objectiveName = objectiveName;
+    }
+
+    public float getObjectiveAmount() {
+        return objectiveAmount;
+    }
+
+    public void setObjectiveAmount(float objectiveAmount) {
+        this.objectiveAmount = objectiveAmount;
+    }
+
+
 }

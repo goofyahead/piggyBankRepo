@@ -17,7 +17,7 @@ public class MockPiggyApi implements PiggyApiInterface {
         shared.add("634783448");
         shared.add("617561189");
         Piggy mockPig = new Piggy("mockPiggy", "ABC2020020202-23423", (float) 300.22, new Date(), "GIFT!",
-                Piggy.PIGGY_TYPE_GIFT, shared);
+                Piggy.PIGGY_TYPE_GIFT, shared, 500.0f);
         List<Piggy> mockList = new LinkedList<Piggy>();
         mockList.add(mockPig);
         return mockList;

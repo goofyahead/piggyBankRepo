@@ -39,7 +39,7 @@ public interface PiggyApiInterface {
      *            the amount of the last saving.
      * @return true if operation was correct.
      */
-    public boolean notifyMoneySavedOnPiggy(Piggy piggy, float amountSaved);
+    public boolean notifyMoneySavedOnPiggy(Piggy piggy, float amountSavedTotal);
 
     /**
      * Request to share a piggy with people, a list with the phoneNumber is
@@ -68,4 +68,6 @@ public interface PiggyApiInterface {
      */
     public String createPiggyForGift(Piggy piggy, float amount, Date expirationDate);
 
+    
+    
 }
