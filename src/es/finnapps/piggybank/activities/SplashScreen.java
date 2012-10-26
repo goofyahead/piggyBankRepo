@@ -31,7 +31,8 @@ public class SplashScreen extends RoboActivity implements OnClickListener {
     }
 
 	public void onClick(View v) {
-		if (mPreferences.isUserRegistered()){
+		//if (mPreferences.isUserRegistered()){
+	    if (false){
 			// Go to main screen
 			startActivity(new Intent(this,BrowsePigsActivity.class));
 		}

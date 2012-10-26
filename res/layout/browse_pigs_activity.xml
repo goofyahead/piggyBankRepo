@@ -1,14 +1,132 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-
-    <TextView
+    android:layout_height="match_parent"
+    android:background="@drawable/basic_background" >
+
+    <ImageView
+        android:id="@+id/imageView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="-20dp"
+        android:src="@drawable/base_titular_galeria" />
+
+    <TextView
+        android:id="@+id/piggy_name_textview"
+        style="@style/TextFieldTitleStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/imageView1"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_marginBottom="18dp"
         android:text="@string/hello_world"
         tools:context=".BrowsePigsActivicity" />
+
+    <Gallery
+        android:id="@+id/gallery"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="false"
+        android:layout_below="@id/imageView1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-40dp"
+        android:spacing="0dp" />
+
+    <ImageButton
+        android:id="@+id/coin2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/coin200"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/background_coin"
+        android:paddingBottom="5dp"
+        android:paddingRight="5dp"
+        android:src="@drawable/moneda_2" />
+
+    <ImageButton
+        android:id="@+id/coin50"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/coin200"
+        android:layout_toRightOf="@+id/coin2"
+        android:background="@drawable/background_coin"
+        android:paddingBottom="5dp"
+        android:src="@drawable/moneda_50" />
+
+    <ImageButton
+        android:id="@+id/coin200"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="15dp"
+        android:layout_toRightOf="@+id/coin50"
+        android:background="@drawable/background_coin"
+        android:paddingBottom="5dp"
+        android:src="@drawable/moneda_200" />
+
+    <ImageButton
+        android:id="@+id/coin100"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/coin200"
+        android:layout_alignLeft="@+id/coin200"
+        android:background="@drawable/background_coin"
+        android:src="@drawable/moneda_100" />
+
+    <ImageButton
+        android:id="@+id/coin1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/coin100"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/background_coin"
+        android:src="@drawable/moneda_1" />
+
+    <ImageButton
+        android:id="@+id/coin20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/coin50"
+        android:layout_alignTop="@id/coin100"
+        android:background="@drawable/background_coin"
+        android:src="@drawable/moneda_20" />
+
+    <TextView
+        android:id="@+id/textView1"
+        style="@style/TextFieldTitleStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/amount_edit"
+        android:layout_alignLeft="@+id/amount_edit"
+        android:layout_alignRight="@+id/amount_edit"
+        android:gravity="center_horizontal"
+        android:text="@string/amount" />
+
+    <Button
+        android:id="@+id/donate_button"
+        style="@style/ButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/donate_button"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/put_money_in_piggybank" />
+
+    <EditText
+        android:id="@+id/amount_edit"
+        style="@style/TextFieldStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/donate_button"
+        android:layout_alignLeft="@id/donate_button"
+        android:layout_alignRight="@id/donate_button"
+        android:inputType="number" >
+
+        <requestFocus />
+    </EditText>
 
 </RelativeLayout>
