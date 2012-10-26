@@ -15,9 +15,9 @@
         android:text="@string/name"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/pink_text" />
-
+
     <EditText
-        android:id="@+id/editText1"
+        android:id="@+id/username_edit"
         style="@style/TextFieldStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -37,9 +37,9 @@
         android:text="@string/phone_number"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/pink_text" />
-
+
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/phonenumber_edit"
         style="@style/TextFieldStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -56,9 +56,9 @@
         android:text="@string/password"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/pink_text" />
-
+
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/password_edit"
         style="@style/TextFieldStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -75,9 +75,9 @@
         android:text="@string/confirm_password"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/pink_text" />
-
+
     <EditText
-        android:id="@+id/editText4"
+        android:id="@+id/confirm_password_edit"
         style="@style/TextFieldStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

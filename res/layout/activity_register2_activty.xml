@@ -17,6 +17,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical" >
+
+            <EditText
+                android:id="@+id/EditText01"
+                style="@style/TextFieldStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/basic_edit"
+                android:ems="10"
+                android:inputType="textPassword" />
 
             <TextView
                 android:id="@+id/firstname_textview"
@@ -26,9 +35,9 @@
                 android:text="@string/first_name"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/pink_text" />
-
+
             <EditText
-                android:id="@+id/editText1"
+                android:id="@+id/first_name_edit"
                 style="@style/TextFieldStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -44,9 +53,9 @@
                 android:text="@string/last_name"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/pink_text" />
-
+
             <EditText
-                android:id="@+id/editText2"
+                android:id="@+id/last_name_edit"
                 style="@style/TextFieldStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -66,9 +75,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
-
+
                 <EditText
-                    android:id="@+id/editText3"
+                    android:id="@+id/street_edit"
                     style="@style/TextFieldStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -91,9 +100,9 @@
                     android:text="@string/street_number"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textColor="@color/pink_text" />
-
+
                 <EditText
-                    android:id="@+id/editText4"
+                    android:id="@+id/street_number_edit"
                     style="@style/TextFieldStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -112,9 +121,9 @@
                 android:text="@string/city"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/pink_text" />
-
+
             <EditText
-                android:id="@+id/EditText01"
+                android:id="@+id/city_edit"
                 style="@style/TextFieldStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -130,9 +139,9 @@
                 android:text="@string/postal_code"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/pink_text" />
-
+
             <EditText
-                android:id="@+id/EditText03"
+                android:id="@+id/postal_code_edit"
                 style="@style/TextFieldStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -149,9 +158,9 @@
                 android:text="@string/country"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/pink_text" />
-
+
             <EditText
-                android:id="@+id/EditText02"
+                android:id="@+id/country_edit"
                 style="@style/TextFieldStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
