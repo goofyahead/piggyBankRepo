@@ -34,11 +34,10 @@
         <activity
             android:name=".activities.RegisterActivty"
             android:label="@string/title_activity_register_activty" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.Register2Activty"
+            android:label="@string/title_activity_register_activty" >
         </activity>
         <activity
             android:name=".activities.DetailPiggyActivity"

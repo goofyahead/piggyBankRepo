@@ -5,71 +5,95 @@
     android:background="@drawable/basic_background"
     android:orientation="vertical"
     android:padding="20dp"
-    android:paddingTop="50dp" >
-
+    android:paddingTop="0dp" >
+
     <TextView
         android:id="@+id/username_textview"
+        style="@style/TextFieldTitleStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/name"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/pink_text" />
+
     <EditText
         android:id="@+id/editText1"
+        style="@style/TextFieldStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10" >
+        android:background="@drawable/basic_edit"
+        android:ems="10"
+        android:inputType="text"
+        android:textColor="@color/grey_text" >
 
         <requestFocus />
     </EditText>
-
+
     <TextView
         android:id="@+id/phonenumber_textview"
+        style="@style/TextFieldTitleStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/phone_number"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/pink_text" />
+
     <EditText
         android:id="@+id/editText2"
+        style="@style/TextFieldStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/basic_edit"
         android:ems="10"
-        android:inputType="phone" />
-
+        android:inputType="phone"
+        android:textColor="@color/grey_text" />
+
     <TextView
         android:id="@+id/password_textview"
+        style="@style/TextFieldTitleStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/password"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/pink_text" />
+
     <EditText
         android:id="@+id/editText3"
+        style="@style/TextFieldStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/basic_edit"
         android:ems="10"
-        android:inputType="textPassword" />
-
+        android:inputType="textPassword"
+        android:textColor="@color/grey_text" />
+
     <TextView
         android:id="@+id/confirm_password_textview"
+        style="@style/TextFieldTitleStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/confirm_password"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/pink_text" />
+
     <EditText
         android:id="@+id/editText4"
+        style="@style/TextFieldStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/form_field_down_padding"
+        android:background="@drawable/basic_edit"
         android:ems="10"
-        android:inputType="textPassword" />
-
+        android:inputType="textPassword"
+        android:textColor="@color/grey_text" />
+
     <Button
         android:id="@+id/button1"
-        android:layout_width="fill_parent"
+        style="@style/ButtonStyle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/basic_button"
-        android:text="Button" />
+        android:text="@string/next"
+        android:textColor="#ffffff" />
 
 </LinearLayout>
