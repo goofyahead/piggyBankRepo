@@ -1,5 +1,7 @@
 package es.finnapps.piggybank.sharedprefs;
 
+import com.google.inject.Inject;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -13,6 +15,7 @@ public class PiggyBankPreferences {
 
     private SharedPreferences prefs;
 
+    @Inject
     public PiggyBankPreferences(Context context) {
         prefs = PreferenceManager.getDefaultSharedPreferences(context);
     }

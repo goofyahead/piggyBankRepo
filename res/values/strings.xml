@@ -8,5 +8,10 @@
     <string name="title_activity_create_piggy">Create Piggy</string>
     <string name="title_activity_register_activty">Register</string>
     <string name="title_activity_detail_piggy">Detail Piggy</string>
+    <string name="dni">DNI</string>
+    <string name="name">User name</string>
+    <string name="phone_number">Phone number</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm password</string>
 
 </resources>
