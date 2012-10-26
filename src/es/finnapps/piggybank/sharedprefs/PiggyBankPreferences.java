@@ -10,6 +10,8 @@ public class PiggyBankPreferences {
 
     private static final String USER_PHONE_NUMBER = "phone_number";
     private static final String USER_AUTH_TOKEN = "auth_token";
+    private static final String USER_NAME_TOKEN = "user_name";
+    private static final String PASSWORD= "password";
     private static final String USER_PRETTY_NAME = "pretty_name";
     private static final String USER_REGISTERED = "user_registered";
 
@@ -28,6 +30,22 @@ public class PiggyBankPreferences {
         prefs.edit().putString(USER_PHONE_NUMBER, userPhoneNumber).commit();
     }
 
+    public String getPassword(){
+        return prefs.getString(PASSWORD, "");
+    }
+
+    public void setPassword(String password) {
+        prefs.edit().putString(PASSWORD, password).commit();
+    }
+    
+    public String getUserName(){
+        return prefs.getString(USER_NAME_TOKEN, "");
+    }
+
+    public void setUserName(String userAuthToken) {
+        prefs.edit().putString(USER_NAME_TOKEN, userAuthToken).commit();
+    }
+    
     public String getUserAuthToken (){
         return prefs.getString(USER_AUTH_TOKEN, "");
     }
