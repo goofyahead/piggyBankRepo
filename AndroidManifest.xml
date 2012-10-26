@@ -6,6 +6,7 @@
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="15" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:name="es.finnapps.piggybank.roboguice.PiggyBankAplication"
@@ -14,6 +15,7 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".activities.SplashScreen"
+            android:screenOrientation="portrait" 
             android:label="@string/title_activity_splash_screen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

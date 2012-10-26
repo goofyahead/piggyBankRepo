@@ -4,6 +4,7 @@ import java.util.List;
 
 import es.finnapps.piggybank.model.Operation;
 import es.finnapps.piggybank.model.Piggy;
+import es.finnapps.piggybank.model.UserInfo;
 
 /**
  * API specs
@@ -20,12 +21,13 @@ public interface BankApiInterface {
 
     public List<Piggy> getAccounts(String token);
 
-    public boolean createClient(String args);
-
     public String getAccountStatus(String account);
 
     public boolean transferFunds(String tokenFrom, String tokenTo);
 
     public boolean depositFunds(String token, float amount);
 
+    public boolean registerClient(UserInfo userInfo);
+
+    public String getToken ();
 }
