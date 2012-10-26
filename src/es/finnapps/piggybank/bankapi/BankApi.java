@@ -38,13 +38,16 @@ import android.util.Log;
 
 public class BankApi implements BankApiInterface {
     private String TAG = BankApi.class.getName();
+
     private String API_URL = "http://finappsapi.bdigital.org/api/2012/";
     private String API_KEY = "c6ab8d3240";
     private String CREATE_CLIENT_URL = API_URL + API_KEY + "/access/client";
     private String GET_TOKEN_URL = API_URL + API_KEY + "/access/login";
+    private String CREATE_ACCOUNT_URL = API_URL + API_KEY + "/" + REPLACE_TOKEN + "/operations/account/@me";
     @Inject
     private PiggyBankPreferences prefs;
 
+    private static final String REPLACE_TOKEN = "{token]";
     protected static final String JSON_TYPE = "application/json";
     protected static final String XML_TYPE = "text/xml";
 
@@ -62,6 +65,14 @@ public class BankApi implements BankApiInterface {
     private static final String KEY_AUTHORIZATION = "Authorization";
     private static final String KEY_BASIC = "Basic";
     private static final String KEY_TOKEN = "token";
+
+    private static final String OFFICE_KEY = "office";
+    private static final String CURRENCY_KEY = "currency";
+    private static final String FIX_OFFICE = "508a8989e4b0a7694d240e9b";
+    private static final String FIX_CURRENCY = "EURO";
+    private static final String KEY_ACCOUNT_NUMBER = "accountNumber";
+    private static final String KEY_DATA = "data";
+
     private String CONTENT = "Content-Type";
     private JSONObject responseJson;
 
@@ -73,7 +84,7 @@ public class BankApi implements BankApiInterface {
         try {
             JSONObject json = createJsonFromParams(names, values);
             StringEntity entity = new StringEntity(json.toString());
-            entity.setContentType(XML_TYPE);
+            entity.setContentType(JSON_TYPE);
             return entity;
         } catch (UnsupportedEncodingException e) {
             Log.d(TAG, "error creating entity from json Encodign", e);
@@ -83,6 +94,20 @@ public class BankApi implements BankApiInterface {
         return null;
     }
 
+    protected StringEntity createNewAccountEntity(String[] names, Object[] values) {
+        try {
+            JSONObject json = createJsonFromParams(names, values);
+            StringEntity entity = new StringEntity(json.toString());
+            entity.setContentType(JSON_TYPE);
+            return entity;
+        } catch (UnsupportedEncodingException e) {
+            Log.d(TAG, "error creating entity from json Encodign", e);
+        } catch (JSONException e) {
+            Log.d(TAG, "error creating entity from json json", e);
+        }
+        return null;
+    }
+ 
     private JSONObject createJsonFromParams(String[] names, Object[] values) throws JSONException {
         JSONObject json = new JSONObject();
         for (int i = 0; i < values.length; i++) {
@@ -241,9 +266,28 @@ public class BankApi implements BankApiInterface {
         }
     }
 
-    public boolean createAccount(String token) {
-        // TODO Auto-generated method stub
-        return false;
+    public String createAccount(String token) {
+        String createAccountUrl = CREATE_ACCOUNT_URL.replace(REPLACE_TOKEN, token);
+        String [] names = {OFFICE_KEY,CURRENCY_KEY};
+        String [] values = {FIX_OFFICE,FIX_CURRENCY};
+        HttpResponse response = callApi(createAccountUrl, null, HttpRequestType.post, createNewAccountEntity(names, values), false);
+
+        JSONObject responseJson = null;
+        try {
+            responseJson = getResponseInfo(response);
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            JSONObject data = responseJson.getJSONObject(KEY_DATA);
+            String accountNumber = data.getString(KEY_ACCOUNT_NUMBER);
+            return accountNumber;
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public List<Operation> getOperations(String account) {

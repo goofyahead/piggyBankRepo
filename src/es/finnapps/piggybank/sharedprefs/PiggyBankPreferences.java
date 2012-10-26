@@ -14,12 +14,21 @@ public class PiggyBankPreferences {
     private static final String PASSWORD= "password";
     private static final String USER_PRETTY_NAME = "pretty_name";
     private static final String USER_REGISTERED = "user_registered";
+    private static final String TOKEN = "user_token";
 
     private SharedPreferences prefs;
 
     @Inject
     public PiggyBankPreferences(Context context) {
         prefs = PreferenceManager.getDefaultSharedPreferences(context);
+    }
+
+    public String getToken (){
+        return prefs.getString(TOKEN, "");
+    }
+
+    public void setToken(String token) {
+        prefs.edit().putString(TOKEN, token).commit();
     }
 
     public String getUserPhone (){
