@@ -5,6 +5,7 @@ import java.util.List;
 
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -16,7 +17,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.Gallery;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -52,7 +52,7 @@ public class BrowsePigsActivity extends RoboActivity implements OnItemSelectedLi
     private PiggyApiInterface mApi;
     @Inject
     private PiggyBankPreferences mPreferences;
-
+    private ImageView mEmptyPiggyView;
     private List<Piggy> mPiggies;
     private List<View> mPiggyViews;
 
@@ -70,11 +70,17 @@ public class BrowsePigsActivity extends RoboActivity implements OnItemSelectedLi
         mCoin100.setOnClickListener(this);
         mCoin200.setOnClickListener(this);
 
+        // Empty piggy, for creating new piggy
+        mEmptyPiggyView = new ImageView(BrowsePigsActivity.this);
+        mEmptyPiggyView.setImageResource(R.drawable.cerdo_galeria);
+        mEmptyPiggyView.setOnClickListener(BrowsePigsActivity.this);
+
         new AsyncTask<Void, Void, Void>() {
 
             @Override
             protected Void doInBackground(Void... params) {
-                mPiggies = mApi.getSharedPiggys(mPreferences.getUserPhone());
+                mPiggies = new ArrayList<Piggy>();
+                mPiggies.addAll(mApi.getSharedPiggys(mPreferences.getUserPhone()));
                 mPiggyViews = new ArrayList<View>();
 
                 for (int i = 0; i < mPiggies.size(); i++) {
@@ -83,10 +89,8 @@ public class BrowsePigsActivity extends RoboActivity implements OnItemSelectedLi
                     mPiggyViews.add(view);
                 }
                 // Add empty piggy
-                ImageView emptyPiggy = new ImageView(BrowsePigsActivity.this);
-                emptyPiggy.setImageResource(R.drawable.cerdo_galeria);
-                mPiggyViews.add(emptyPiggy);
-                
+                mPiggyViews.add(mEmptyPiggyView);
+
                 return null;
             }
 
@@ -123,6 +127,9 @@ public class BrowsePigsActivity extends RoboActivity implements OnItemSelectedLi
     }
 
     public void onItemSelected(AdapterView<?> adapter, View view, int position, long id) {
+        if (view == mEmptyPiggyView){
+            
+        }
         mPiggyNameTextView.setText(mPiggies.get(position).getName());
 
     }
@@ -136,6 +143,9 @@ public class BrowsePigsActivity extends RoboActivity implements OnItemSelectedLi
         Animation scaleAnim = AnimationUtils.loadAnimation(this, R.anim.coin_click);
         v.startAnimation(scaleAnim);
 
+        if (v == mEmptyPiggyView) {
+            startActivity(new Intent(BrowsePigsActivity.this, CreatePiggyActivity.class));
+        }
         new AsyncTask<Void, Void, Void>() {
 
             @Override
