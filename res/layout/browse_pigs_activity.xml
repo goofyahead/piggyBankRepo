@@ -3,25 +3,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/basic_background" >
-
+
     <ImageView
         android:id="@+id/imageView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="-20dp"
+        android:layout_marginTop="-40dp"
         android:src="@drawable/base_titular_galeria" />
-
+
     <TextView
         android:id="@+id/piggy_name_textview"
         style="@style/TextFieldTitleStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/imageView1"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="18dp"
+        android:layout_marginTop="10dp"
+        android:paddingTop="0dp"
         android:text="@string/hello_world"
         tools:context=".BrowsePigsActivicity" />
-
+
     <Gallery
         android:id="@+id/gallery"
         android:layout_width="fill_parent"
@@ -29,7 +29,7 @@
         android:layout_alignParentTop="false"
         android:layout_below="@id/imageView1"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="-40dp"
+        android:layout_marginTop="-20dp"
         android:spacing="0dp" />
 
     <ImageButton
@@ -91,7 +91,7 @@
         android:layout_alignTop="@id/coin100"
         android:background="@drawable/background_coin"
         android:src="@drawable/moneda_20" />
-
+
     <TextView
         android:id="@+id/textView1"
         style="@style/TextFieldTitleStyle"
@@ -100,7 +100,7 @@
         android:layout_above="@+id/amount_edit"
         android:layout_alignLeft="@+id/amount_edit"
         android:layout_alignRight="@+id/amount_edit"
-        android:gravity="center_horizontal"
+        android:gravity="left"
         android:text="@string/amount" />
 
     <Button
@@ -115,7 +115,7 @@
         android:layout_marginRight="15dp"
         android:layout_marginTop="5dp"
         android:text="@string/put_money_in_piggybank" />
-
+
     <EditText
         android:id="@+id/amount_edit"
         style="@style/TextFieldStyle"
@@ -124,6 +124,7 @@
         android:layout_above="@id/donate_button"
         android:layout_alignLeft="@id/donate_button"
         android:layout_alignRight="@id/donate_button"
+        android:gravity="left"
         android:inputType="number" >
 
         <requestFocus />
