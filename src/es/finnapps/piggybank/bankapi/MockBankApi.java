@@ -18,11 +18,6 @@ public class MockBankApi implements BankApiInterface {
         return null;
     }
 
-    public float getAccountAmount(String account) {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
     public List<Piggy> getAccounts(String token) {
         // TODO Auto-generated method stub
         return null;
@@ -38,11 +33,6 @@ public class MockBankApi implements BankApiInterface {
         return null;
     }
 
-    public boolean transferFunds(String tokenFrom, String tokenTo) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
     public boolean depositFunds(String token, float amount) {
         // TODO Auto-generated method stub
         return false;
@@ -56,6 +46,17 @@ public class MockBankApi implements BankApiInterface {
     public String getToken() {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    public long getAccountAmount(String account, String token) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    public boolean transferFunds(String fromAccount, String toAccount, String token, String concept, String userNumber,
+            float amount) {
+        // TODO Auto-generated method stub
+        return false;
     }
 
 }
