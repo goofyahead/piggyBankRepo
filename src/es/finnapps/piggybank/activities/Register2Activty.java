@@ -11,7 +11,7 @@ import es.finnapps.piggybank.R;
 
 
 
-public class RegisterActivty extends RoboActivity {
+public class Register2Activty extends RoboActivity {
 
 	@InjectView(R.id.button1)
 	private Button okButton;
@@ -24,9 +24,6 @@ public class RegisterActivty extends RoboActivity {
         okButton.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				Intent intent = new Intent(RegisterActivty.this, Register2Activty.class);
-				// Add extras with form data.
-				startActivity(intent);
 			}
 		});
     }
