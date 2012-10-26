@@ -4,6 +4,7 @@ import java.util.List;
 
 import es.finnapps.piggybank.model.Operation;
 import es.finnapps.piggybank.model.Piggy;
+import es.finnapps.piggybank.model.UserInfo;
 
 public class MockBankApi implements BankApiInterface {
 
@@ -45,6 +46,16 @@ public class MockBankApi implements BankApiInterface {
     public boolean depositFunds(String token, float amount) {
         // TODO Auto-generated method stub
         return false;
+    }
+
+    public boolean registerClient(UserInfo userInfo) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    public String getToken() {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

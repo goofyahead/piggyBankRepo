@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.google.inject.AbstractModule;
 
+import es.finnapps.piggybank.bankapi.BankApi;
 import es.finnapps.piggybank.bankapi.BankApiInterface;
 import es.finnapps.piggybank.bankapi.MockBankApi;
 import es.finnapps.piggybank.contacts.ContactsProvider;
@@ -17,8 +18,9 @@ public class CustomConfigModule extends AbstractModule {
         Context mContext = PiggyBankAplication.getContext();
 
         PiggyApiInterface piggyApi = new MockPiggyApi();
-        BankApiInterface bankApi = new MockBankApi();
+        BankApiInterface bankApi = new BankApi();
         ContactsProvider contacts = new ContactsProvider(mContext);
+        
 
         bind(PiggyApiInterface.class).toInstance(piggyApi);
         bind(BankApiInterface.class).toInstance(bankApi);
