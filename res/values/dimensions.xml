@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
     <resources>
         <dimen name="strokewidth">1dp</dimen>
+        <dimen name="form_title_down_padding">5dp</dimen>
+        <dimen name="form_field_down_padding">22dp</dimen>
     </resources>

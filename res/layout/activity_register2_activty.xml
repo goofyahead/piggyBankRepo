@@ -6,70 +6,172 @@
     android:orientation="vertical"
     android:padding="20dp"
     android:paddingTop="50dp" >
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="200" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/firstname_textview"
+                style="@style/TextFieldTitleStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/first_name"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/pink_text" />
+
+            <EditText
+                android:id="@+id/editText1"
+                style="@style/TextFieldStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/basic_edit"
+                android:ems="10"
+                android:inputType="text|textCapWords" />
+
+            <TextView
+                android:id="@+id/lastname_textview"
+                style="@style/TextFieldTitleStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/last_name"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/pink_text" />
+
+            <EditText
+                android:id="@+id/editText2"
+                style="@style/TextFieldStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/basic_edit"
+                android:ems="10"
+                android:inputType="phone" />
+
+            <TextView
+                android:id="@+id/street_textview"
+                style="@style/TextFieldTitleStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/street"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/pink_text" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <EditText
+                    android:id="@+id/editText3"
+                    style="@style/TextFieldStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5"
+                    android:background="@drawable/basic_edit"
+                    android:ems="10"
+                    android:inputType="text|textPassword" >
+
+                    <requestFocus />
+                </EditText>
+
+                <TextView
+                    android:id="@+id/street_number_textview"
+                    style="@style/TextFieldTitleStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="0dp"
+                    android:paddingBottom="0dp"
+                    android:paddingTop="0dp"
+                    android:text="@string/street_number"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/pink_text" />
 
-    <TextView
-        android:id="@+id/username_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/name"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+                <EditText
+                    android:id="@+id/editText4"
+                    style="@style/TextFieldStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:background="@drawable/basic_edit"
+                    android:ems="10"
+                    android:inputType="textPassword" />
 
-    <EditText
-        android:id="@+id/editText1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10" >
-
-        <requestFocus />
-    </EditText>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/city_textview"
+                style="@style/TextFieldTitleStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/city"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/pink_text" />
+
+            <EditText
+                android:id="@+id/EditText01"
+                style="@style/TextFieldStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/basic_edit"
+                android:ems="10"
+                android:inputType="textPassword" />
+
+            <TextView
+                android:id="@+id/postalcode_textview"
+                style="@style/TextFieldTitleStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/postal_code"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/pink_text" />
+
+            <EditText
+                android:id="@+id/EditText03"
+                style="@style/TextFieldStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/basic_edit"
+                android:ems="10"
+                android:inputType="textPassword" />
 
-    <TextView
-        android:id="@+id/phonenumber_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/phone_number"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+            <TextView
+                android:id="@+id/country_textview"
+                style="@style/TextFieldTitleStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/form_title_down_padding"
+                android:text="@string/country"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/pink_text" />
+
+            <EditText
+                android:id="@+id/EditText02"
+                style="@style/TextFieldStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/form_field_down_padding"
+                android:background="@drawable/basic_edit"
+                android:ems="10"
+                android:inputType="textPassword" />
 
-    <EditText
-        android:id="@+id/editText2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="phone" />
-
-    <TextView
-        android:id="@+id/password_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/password"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        </LinearLayout>
 
-    <EditText
-        android:id="@+id/editText3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPassword" />
-
-    <TextView
-        android:id="@+id/confirm_password_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/confirm_password"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <EditText
-        android:id="@+id/editText4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPassword" />
-
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/basic_button"
-        android:text="Button" />
+    </ScrollView>
+
+            <Button
+                android:id="@+id/button1"
+                style="@style/ButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/basic_button"
+                android:text="@string/register"
+                android:textColor="#ffffff" />
 
 </LinearLayout>

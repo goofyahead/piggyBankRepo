@@ -1,5 +1,29 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="AppTheme" parent="android:Theme.Light" />
 
+    <style name="TextFieldTitleStyle">
+        <item name="android:textColor">@color/grey_text</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:paddingTop">@dimen/form_field_down_padding</item>
+        <item name="android:paddingBottom">@dimen/form_title_down_padding</item>
+    </style>
+    <style name="TextFieldStyle" >
+        <item name="android:textColor">@color/grey_text</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">15dp</item>
+        <item name="android:paddingRight">15dp</item>
+        <item name="android:paddingLeft">15dp</item>
+    </style>
+    
+    <style name="ButtonStyle">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:padding">20dp</item>
+        <item name="android:paddingTop">15dp</item>
+        <item name="android:paddingBottom">15dp</item>
+    </style>
+ 
 </resources>
