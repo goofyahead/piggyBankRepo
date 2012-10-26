@@ -13,7 +13,7 @@ import es.finnapps.piggybank.model.UserInfo;
  */
 public interface BankApiInterface {
 
-    public boolean createAccount(String token);
+    public String createAccount(String token);
 
     public List<Operation> getOperations(String account);
 

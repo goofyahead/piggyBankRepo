@@ -8,9 +8,9 @@ import es.finnapps.piggybank.model.UserInfo;
 
 public class MockBankApi implements BankApiInterface {
 
-    public boolean createAccount(String token) {
+    public String createAccount(String token) {
         // TODO Auto-generated method stub
-        return false;
+        return "";
     }
 
     public List<Operation> getOperations(String account) {
