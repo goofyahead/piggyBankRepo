@@ -8,6 +8,7 @@ import java.io.Reader;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +25,7 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.AbstractHttpEntity;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -50,7 +52,7 @@ public class PiggyApi implements PiggyApiInterface{
     private String ADD_USER_TO_ACCOUNT = API_URL +"/add_user_to_account";
     private String ADD_USER = API_URL +"/add_user";
     private String GET_MY_ACCOUNTS = API_URL +"/my_accounts";
-        
+    private String ADD_ACCOUNT = API_URL +"/add_account";
  
     @Inject
     private PiggyBankPreferences prefs;
@@ -62,6 +64,9 @@ public class PiggyApi implements PiggyApiInterface{
     private static final String KEY_AMOUNT = "amount";
     private static final String KEY_TELEPHONE = "telephone";
     private static final String KEY_ACCOUNT_NUMBER  = "account_number";
+    private static final String KEY_AMOUNT_NEDDED  = "amount_needed";
+    private static final String KEY_NAME  = "name";
+    
     private static final int BUFFERSIZE = 1024;
     private String CONTENT = "Content-Type";
     private JSONObject responseJson;
@@ -171,7 +176,7 @@ public class PiggyApi implements PiggyApiInterface{
 //        if (resultado == 400) {
 //            Log.d(TAG, "error in petition");
 //        }
-        return response;
+           return response;
     }
 
     public JSONObject getResponseInfo(HttpResponse response) {
@@ -214,7 +219,7 @@ public class PiggyApi implements PiggyApiInterface{
         return writer.toString();
     }
 
-    public boolean register(String telephone, String token_push) {
+    public boolean registerUser(String telephone, String token_push) {
         String[] userKeys = { KEY_TELEPHONE, KEY_TOKEN};
         String[] userValues = { telephone, token_push};
         JSONObject userJson = null;
@@ -231,41 +236,6 @@ public class PiggyApi implements PiggyApiInterface{
         } else {
             return false;
         }
-    }
-
-    public boolean createAccount(String token) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    public List<Operation> getOperations(String account) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public float getAccountAmount(String account) {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    public List<Piggy> getAccounts(String token) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public String getAccountStatus(String account) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public boolean transferFunds(String tokenFrom, String tokenTo) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    public boolean depositFunds(String token, float amount) {
-        // TODO Auto-generated method stub
-        return false;
     }
 /*
     public String getToken() {
@@ -291,28 +261,148 @@ public class PiggyApi implements PiggyApiInterface{
     
     
     public List<Piggy> getSharedPiggys(String phoneNumber) {
-        // TODO Auto-generated method stub
-        return null;
+        List<Piggy> to_ret = new ArrayList<Piggy>();
+        String[] userKeys = { KEY_TELEPHONE};
+        String[] userValues = { phoneNumber};
+        JSONObject userJson = null;
+        try {
+            userJson = createJsonFromParams(userKeys, userValues);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        StringEntity entity = createJSONRequestForRegister(userKeys, userValues);
+        HttpResponse response = callApi(GET_ACCOUNTS_FOR_TELEPHONE, getBasicHeaders(), HttpRequestType.post, entity, false);
+
+        if (response.getStatusLine().getStatusCode() == 200) {
+            JSONObject info = getResponseInfo(response);
+            try {
+                JSONArray array = info.getJSONArray("piggy");
+                for(int i = 0; i<array.length(); i++){
+                    JSONObject o = (JSONObject) array.get(i);
+                    JSONArray phone_array = o.getJSONArray("telephones");
+                    List<String> phones = new ArrayList<String>();
+                    for (int j = 0; j <phone_array.length(); j++){
+                        phones.add(((JSONObject)phone_array.get(j)).getString(KEY_TELEPHONE));
+                    }
+                    
+                        
+                    Piggy pig = new Piggy(o.getString(KEY_NAME), o.getString(KEY_ACCOUNT_NUMBER), o.getLong(KEY_AMOUNT), null, "",0, phones, o.getLong(KEY_AMOUNT_NEDDED));
+                    to_ret.add(pig);
+                }
+            } catch (JSONException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+         
+            return to_ret;
+        } else {
+            return to_ret;
+        }       
     }
 
     public boolean notifyMoneySavedOnPiggy(Piggy piggy, float amountSavedTotal) {
-        // TODO Auto-generated method stub
-        return false;
+        String[] userKeys = { KEY_ACCOUNT_NUMBER, KEY_AMOUNT};
+        String[] userValues = { piggy.getNumber(), Float.toString(amountSavedTotal)};
+        JSONObject userJson = null;
+        try {
+            userJson = createJsonFromParams(userKeys, userValues);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        StringEntity entity = createJSONRequestForRegister(userKeys, userValues);
+        HttpResponse response = callApi(UPDATE_ACCOUNT_AMOUNT, getBasicHeaders(), HttpRequestType.post, entity, false);
+
+        if (response.getStatusLine().getStatusCode() == 200) {
+            return true;
+        } else {
+            return false;
+        }
+        
     }
 
     public boolean sharePiggyWith(Piggy piggy) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    public String createPiggyForGift(Piggy piggy, float amount, Date expirationDate) {
-        // TODO Auto-generated method stub
-        return null;
+        List<String> telephones = piggy.getShared();
+        for(int i = 0; i <telephones.size(); i++){
+            
+            String[] userKeys = { KEY_TELEPHONE, KEY_ACCOUNT_NUMBER};
+            String[] userValues = { piggy.getNumber(), telephones.get(i)};
+            JSONObject userJson = null;
+            try {
+                userJson = createJsonFromParams(userKeys, userValues);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            StringEntity entity = createJSONRequestForRegister(userKeys, userValues);
+            HttpResponse response = callApi(ADD_USER_TO_ACCOUNT, getBasicHeaders(), HttpRequestType.post, entity, false);
+    
+            if (response.getStatusLine().getStatusCode() == 200) {
+                
+            } else {
+                return false;
+            }
+        }
+        return true;
+        
+        
     }
 
     public boolean createPiggy(Piggy piggy, String telephoneOwner) {
-        // TODO Auto-generated method stub
-        return false;
+        String[] userKeys = { KEY_ACCOUNT_NUMBER, KEY_AMOUNT, KEY_AMOUNT_NEDDED, KEY_NAME, KEY_TELEPHONE};
+        String[] userValues = { piggy.getNumber(), Float.toString(piggy.getAmount()), Float.toString(piggy.getObjectiveAmount()),piggy.getName(), telephoneOwner};
+        JSONObject userJson = null;
+        try {
+            userJson = createJsonFromParams(userKeys, userValues);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        StringEntity entity = createJSONRequestForRegister(userKeys, userValues);
+        HttpResponse response = callApi(ADD_ACCOUNT, getBasicHeaders(), HttpRequestType.post, entity, false);
+
+        if (response.getStatusLine().getStatusCode() == 200) {
+            return true;
+        } else {
+            return false;
+        }
+       }
+
+    public List<Piggy> getMyPiggys(String phoneNumber) {
+        List<Piggy> to_ret = new ArrayList<Piggy>();
+        String[] userKeys = { KEY_TELEPHONE};
+        String[] userValues = { phoneNumber};
+        JSONObject userJson = null;
+        try {
+            userJson = createJsonFromParams(userKeys, userValues);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        StringEntity entity = createJSONRequestForRegister(userKeys, userValues);
+        HttpResponse response = callApi(GET_MY_ACCOUNTS, getBasicHeaders(), HttpRequestType.post, entity, false);
+
+        if (response.getStatusLine().getStatusCode() == 200) {
+            JSONObject info = getResponseInfo(response);
+            try {
+                JSONArray array = info.getJSONArray("piggy");
+                for(int i = 0; i<array.length(); i++){
+                    JSONObject o = (JSONObject) array.get(i);
+                    JSONArray phone_array = o.getJSONArray("telephones");
+                    List<String> phones = new ArrayList<String>();
+                    for (int j = 0; j <phone_array.length(); j++){
+                        phones.add(((JSONObject)phone_array.get(j)).getString(KEY_TELEPHONE));
+                    }
+                    
+                        
+                    Piggy pig = new Piggy(o.getString(KEY_NAME), o.getString(KEY_ACCOUNT_NUMBER), o.getLong(KEY_AMOUNT), null, "",0, phones, o.getLong(KEY_AMOUNT_NEDDED));
+                    to_ret.add(pig);
+                }
+            } catch (JSONException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+         
+            return to_ret;
+        } else {
+            return to_ret;
+        }       
     }
 
 }

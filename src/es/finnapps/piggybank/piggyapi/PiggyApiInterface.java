@@ -17,7 +17,7 @@ public interface PiggyApiInterface {
      *            identification.
      * @return true if correctly registered.
      */
-    public boolean register(String userName, String phoneNumber);
+    public boolean registerUser(String userName, String phoneNumber);
 
     /**
      * Request for piggys that are shared with me, a list of piggys should be
@@ -54,22 +54,10 @@ public interface PiggyApiInterface {
      */
     public boolean sharePiggyWith(Piggy piggy);
     
-    public boolean createPiggy(Piggy piggy, String telephoneOwner);
-
-    /**
-     * Request to create a new piggy gift, an account will be created and
-     * returned, all the people will receive an invite for this piggy.
-     * 
-     * @param piggy
-     *            the gift piggy with the people to invite.
-     * @param amount
-     *            the amount of the gift.
-     * @param expirationDate
-     *            the expiration date for buying the gift.
-     * @return
-     */
-    public String createPiggyForGift(Piggy piggy, float amount, Date expirationDate);
 
     
+    public boolean createPiggy(Piggy piggy, String telephoneOwner);
+
+    public List<Piggy> getMyPiggys(String phoneNumber);
     
 }
