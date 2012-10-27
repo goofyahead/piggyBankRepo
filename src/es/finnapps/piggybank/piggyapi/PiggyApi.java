@@ -45,31 +45,24 @@ public class PiggyApi implements PiggyApiInterface{
     
     private String GET_ACCOUNT_AMOUNT = API_URL + "/account_amount";
     private String GET_ACCOUNT = API_URL + "/get_account";
-    private String GET_ACCOUNTS_FOR_TELEPHONE = "/accounts_for_telephone";
-    private String UPDATE_ACCOUNT_AMOUNT = "/update_account_amount";
-    private String ADD_USER_TO_ACCOUNT = "/add_user_to_account";
-    private String ADD_USER = "/add_user";
-    
+    private String GET_ACCOUNTS_FOR_TELEPHONE = API_URL +"/accounts_for_telephone";
+    private String UPDATE_ACCOUNT_AMOUNT = API_URL +"/update_account_amount";
+    private String ADD_USER_TO_ACCOUNT = API_URL +"/add_user_to_account";
+    private String ADD_USER = API_URL +"/add_user";
+    private String GET_MY_ACCOUNTS = API_URL +"/my_accounts";
+        
+ 
     @Inject
     private PiggyBankPreferences prefs;
 
     protected static final String JSON_TYPE = "application/json";
     protected static final String XML_TYPE = "text/xml";
 
-    private static final String KEY_USERNAME = "username";
-    private static final String KEY_PASSWORD = "password";
-    private static final String KEY_FIRSTNAME = "firstName";
-    private static final String KEY_LASTNAME = "lastName";
-    private static final String KEY_ADDRESS = "address";
-    private static final String KEY_STREET = "street";
-    private static final String KEY_NUMBER = "number";
-    private static final String KEY_CITY = "city";
-    private static final String KEY_POSTALCODE = "postalCode";
-    private static final String KEY_COUNTRY = "country";
-    private static final int BUFFERSIZE = 1024;
-    private static final String KEY_AUTHORIZATION = "Authorization";
-    private static final String KEY_BASIC = "Basic";
     private static final String KEY_TOKEN = "token";
+    private static final String KEY_AMOUNT = "amount";
+    private static final String KEY_TELEPHONE = "telephone";
+    private static final String KEY_ACCOUNT_NUMBER  = "account_number";
+    private static final int BUFFERSIZE = 1024;
     private String CONTENT = "Content-Type";
     private JSONObject responseJson;
 
@@ -172,12 +165,12 @@ public class PiggyApi implements PiggyApiInterface{
             Log.d(TAG, "Error requesting url", e);
         }
 
-        Log.v(TAG, "Response received " + response.getStatusLine());
-
-        int resultado = response.getStatusLine().getStatusCode();
-        if (resultado == 400) {
-            Log.d(TAG, "error in petition");
-        }
+//        Log.v(TAG, "Response received " + response.getStatusLine());
+//
+//        int resultado = response.getStatusLine().getStatusCode();
+//        if (resultado == 400) {
+//            Log.d(TAG, "error in petition");
+//        }
         return response;
     }
 
@@ -221,21 +214,17 @@ public class PiggyApi implements PiggyApiInterface{
         return writer.toString();
     }
 
-    public boolean registerClient(UserInfo userInfo) {
-        String[] street = { KEY_STREET, KEY_NUMBER, KEY_CITY, KEY_POSTALCODE, KEY_COUNTRY };
-        String[] streetValues = { userInfo.getStreet(), userInfo.getCity(), userInfo.getPostalCode(),
-                userInfo.getCountry() };
-        JSONObject streetJson = null;
+    public boolean register(String telephone, String token_push) {
+        String[] userKeys = { KEY_TELEPHONE, KEY_TOKEN};
+        String[] userValues = { telephone, token_push};
+        JSONObject userJson = null;
         try {
-            streetJson = createJsonFromParams(street, streetValues);
+            userJson = createJsonFromParams(userKeys, userValues);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        String[] names = { KEY_USERNAME, KEY_PASSWORD, KEY_FIRSTNAME, KEY_LASTNAME, KEY_ADDRESS };
-        Object[] values = { userInfo.getUserName(), userInfo.getPassword(), userInfo.getFirstName(),
-                userInfo.getLastName(), streetJson };
-        StringEntity entity = createJSONRequestForRegister(names, values);
-        HttpResponse response = callApi(CREATE_CLIENT_URL, getBasicHeaders(), HttpRequestType.post, entity, false);
+        StringEntity entity = createJSONRequestForRegister(userKeys, userValues);
+        HttpResponse response = callApi(ADD_USER, getBasicHeaders(), HttpRequestType.post, entity, false);
 
         if (response.getStatusLine().getStatusCode() == 200) {
             return true;
@@ -278,7 +267,7 @@ public class PiggyApi implements PiggyApiInterface{
         // TODO Auto-generated method stub
         return false;
     }
-
+/*
     public String getToken() {
         HttpResponse response = callApi(GET_TOKEN_URL, null, HttpRequestType.get, null, true);
 
@@ -298,14 +287,9 @@ public class PiggyApi implements PiggyApiInterface{
         }
         return null;
     }
-
+*/
     
     
-    public boolean register(String userName, String phoneNumber) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
     public List<Piggy> getSharedPiggys(String phoneNumber) {
         // TODO Auto-generated method stub
         return null;
@@ -324,6 +308,11 @@ public class PiggyApi implements PiggyApiInterface{
     public String createPiggyForGift(Piggy piggy, float amount, Date expirationDate) {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    public boolean createPiggy(Piggy piggy, String telephoneOwner) {
+        // TODO Auto-generated method stub
+        return false;
     }
 
 }
