@@ -1,13 +1,21 @@
 package es.finnapps.piggybank.activities;
 
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
 import android.content.Intent;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
+import android.nfc.NfcAdapter;
+import android.nfc.NfcEvent;
+import android.nfc.NfcAdapter.CreateNdefMessageCallback;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,6 +29,7 @@ import android.widget.Gallery;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.inject.Inject;
 
@@ -29,7 +38,8 @@ import es.finnapps.piggybank.model.Piggy;
 import es.finnapps.piggybank.piggyapi.PiggyApiInterface;
 import es.finnapps.piggybank.sharedprefs.PiggyBankPreferences;
 
-public class BrowsePigsActivity extends RoboActivity implements OnItemSelectedListener, OnClickListener {
+public class BrowsePigsActivity extends RoboActivity implements CreateNdefMessageCallback, OnItemSelectedListener,
+        OnClickListener {
 
     @InjectView(R.id.gallery)
     private Gallery mGallery;
@@ -47,6 +57,7 @@ public class BrowsePigsActivity extends RoboActivity implements OnItemSelectedLi
     private ImageButton mCoin100;
     @InjectView(R.id.coin200)
     private ImageButton mCoin200;
+    private NfcAdapter mNfcAdapter;
 
     @Inject
     private PiggyApiInterface mApi;
@@ -55,11 +66,19 @@ public class BrowsePigsActivity extends RoboActivity implements OnItemSelectedLi
     private ImageView mEmptyPiggyView;
     private List<Piggy> mPiggies;
     private List<View> mPiggyViews;
+    private Piggy currentPiggy = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.browse_pigs_activity);
+
+        mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        if (mNfcAdapter == null) {
+            Toast.makeText(this, "NFC is not available", Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
 
         mGallery.setOnItemSelectedListener(this);
 
@@ -99,6 +118,7 @@ public class BrowsePigsActivity extends RoboActivity implements OnItemSelectedLi
             };
 
         }.execute();
+        mNfcAdapter.setNdefPushMessageCallback(this, this);
     }
 
     @Override
@@ -127,11 +147,11 @@ public class BrowsePigsActivity extends RoboActivity implements OnItemSelectedLi
     }
 
     public void onItemSelected(AdapterView<?> adapter, View view, int position, long id) {
-        if (view == mEmptyPiggyView){
-            
+        if (view == mEmptyPiggyView) {
+
         }
         mPiggyNameTextView.setText(mPiggies.get(position).getName());
-
+        currentPiggy = mPiggies.get(position);
     }
 
     public void onNothingSelected(AdapterView<?> arg0) {
@@ -159,5 +179,69 @@ public class BrowsePigsActivity extends RoboActivity implements OnItemSelectedLi
 
         }.execute();
 
+    }
+
+    public NdefMessage createNdefMessage(NfcEvent event) {
+
+        NdefMessage msg = new NdefMessage(
+                new NdefRecord[] { createTextRecord(currentPiggy.getNumber(), Locale.getDefault(), true) });
+        return msg;
+    }
+
+    /**
+     * Creates a custom MIME type encapsulated in an NDEF record
+     */
+    public NdefRecord createMimeRecord(String mimeType, byte[] payload) {
+        byte[] mimeBytes = mimeType.getBytes(Charset.forName("US-ASCII"));
+        NdefRecord mimeRecord = new NdefRecord(NdefRecord.TNF_MIME_MEDIA, mimeBytes, new byte[0], payload);
+        return mimeRecord;
+    }
+
+    public NdefRecord createTextRecord(String payload, Locale locale, boolean encodeInUtf8) {
+        byte[] langBytes = locale.getLanguage().getBytes(Charset.forName("US-ASCII"));
+        Charset utfEncoding = encodeInUtf8 ? Charset.forName("UTF-8") : Charset.forName("UTF-16");
+        byte[] textBytes = payload.getBytes(utfEncoding);
+        int utfBit = encodeInUtf8 ? 0 : (1 << 7);
+        char status = (char) (utfBit + langBytes.length);
+        byte[] data = new byte[1 + langBytes.length + textBytes.length];
+        data[0] = (byte) status;
+        System.arraycopy(langBytes, 0, data, 1, langBytes.length);
+        System.arraycopy(textBytes, 0, data, 1 + langBytes.length, textBytes.length);
+        NdefRecord record = new NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_TEXT, new byte[0], data);
+        return record;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Check to see that the Activity started due to an Android Beam
+        if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(getIntent().getAction())) {
+            if (processIntent(getIntent())){
+                //create nuevo cerdo
+            }else{
+                //fail
+            }
+        }
+    }
+
+    @Override
+    public void onNewIntent(Intent intent) {
+        // onResume gets called after this to handle the intent
+        setIntent(intent);
+    }
+
+    /**
+     * Parses the NDEF Message from the intent and prints to the TextView
+     */
+    public boolean processIntent(Intent intent) {
+       
+        Parcelable[] rawMsgs = intent.getParcelableArrayExtra(
+                NfcAdapter.EXTRA_NDEF_MESSAGES);
+        // only one message sent during the beam
+        NdefMessage msg = (NdefMessage) rawMsgs[0];
+        Toast.makeText(this, "Cerdito compartido contigo " + new String(msg.getRecords()[0].getPayload()), Toast.LENGTH_LONG).show();
+        
+        // record 0 contains the MIME type, record 1 is the AAR, if present
+        return true;
     }
 }
