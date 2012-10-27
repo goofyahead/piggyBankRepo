@@ -14,6 +14,7 @@ public class PiggyBankPreferences {
     private static final String USER_PRETTY_NAME = "pretty_name";
     private static final String USER_REGISTERED = "user_registered";
     private static final String TOKEN = "user_token";
+    private static final String BASE_ACCOUNT = "base_account";
 
     private SharedPreferences prefs;
 
@@ -68,5 +69,13 @@ public class PiggyBankPreferences {
 
     public void setUserRegistered(boolean userRegistered) {
         prefs.edit().putBoolean(USER_REGISTERED, userRegistered).commit();
+    }
+
+    public void setBaseAccount(String firstAccount) {
+        prefs.edit().putString(BASE_ACCOUNT, firstAccount).commit();
+    }
+
+    public String getBaseAccount (){
+        return prefs.getString(BASE_ACCOUNT, "");
     }
 }

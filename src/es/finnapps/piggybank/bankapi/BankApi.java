@@ -296,6 +296,7 @@ public class BankApi implements BankApiInterface {
             String token = getToken();
             prefs.setToken(token);
             String firstAccount = createAccount(token);
+            prefs.setBaseAccount(firstAccount);
             depositFunds(token, firstAccount);
             return true;
         } else {
