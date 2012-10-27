@@ -25,7 +25,7 @@ public interface BankApiInterface {
 
     public boolean transferFunds(String fromAccount, String toAccount, String token, String concept, String userNumber, float amount);
 
-    public boolean depositFunds(String token, float amount);
+    public boolean depositFunds(String token, String account);
 
     public boolean registerClient(UserInfo userInfo);
 

@@ -33,11 +33,6 @@ public class MockBankApi implements BankApiInterface {
         return null;
     }
 
-    public boolean depositFunds(String token, float amount) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
     public boolean registerClient(UserInfo userInfo) {
         // TODO Auto-generated method stub
         return false;
@@ -55,6 +50,11 @@ public class MockBankApi implements BankApiInterface {
 
     public boolean transferFunds(String fromAccount, String toAccount, String token, String concept, String userNumber,
             float amount) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    public boolean depositFunds(String token, String account) {
         // TODO Auto-generated method stub
         return false;
     }
