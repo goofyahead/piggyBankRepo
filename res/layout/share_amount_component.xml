@@ -1,0 +1,24 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android1="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/basic_background" >
+
+    <TextView
+        android1:id="@+id/textView1"
+        android1:layout_width="fill_parent"
+        android1:layout_height="wrap_content"
+        android1:text="Large Text"
+        android1:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <EditText
+        android1:id="@+id/amount_edit"
+        style="@style/TextFieldStyle"
+        android1:layout_width="fill_parent"
+        android1:layout_height="wrap_content"
+        android1:layout_below="@id/textView1"
+        android1:ems="10"
+        android1:inputType="text" />
+
+</RelativeLayout>

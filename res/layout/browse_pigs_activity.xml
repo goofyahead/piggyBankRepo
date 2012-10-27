@@ -21,7 +21,7 @@
         android:paddingTop="0dp"
         android:text="@string/hello_world"
         tools:context=".BrowsePigsActivicity" />
-
+
     <Gallery
         android:id="@+id/gallery"
         android:layout_width="fill_parent"
@@ -30,7 +30,7 @@
         android:layout_below="@id/imageView1"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="-20dp"
-        android:spacing="0dp" />
+        android:spacing="-50dp" />
 
     <ImageButton
         android:id="@+id/coin2"

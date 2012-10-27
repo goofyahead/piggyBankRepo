@@ -15,6 +15,7 @@ import com.google.inject.Inject;
 import es.finnapps.piggybank.R;
 import es.finnapps.piggybank.bankapi.BankApiInterface;
 import es.finnapps.piggybank.model.UserInfo;
+import es.finnapps.piggybank.piggyapi.PiggyApiInterface;
 import es.finnapps.piggybank.sharedprefs.PiggyBankPreferences;
 
 
@@ -41,6 +42,8 @@ public class Register2Activty extends RoboActivity {
 	
 	@Inject
 	private BankApiInterface bankApi;
+	@Inject
+	private PiggyApiInterface mPiggyApi;
 	@Inject
 	private PiggyBankPreferences mPreferences;
 	
@@ -72,9 +75,13 @@ public class Register2Activty extends RoboActivity {
 								countryEdit.getText().toString());
 						
 						mPreferences.setUserName(userInfo.getUserName());
-						mPreferences.setUserPhoneNumber(userInfo.getNumber());
+						mPreferences.setUserPhoneNumber( getIntent().getStringExtra(RegisterActivty.EXTRA_PHONE));
 						bankApi.registerClient(userInfo);
-						mPreferences.setUserRegistered(true);
+						boolean success = mPiggyApi.registerUser(getIntent().getStringExtra(RegisterActivty.EXTRA_PHONE), getIntent().getStringExtra(RegisterActivty.EXTRA_PHONE));
+						if (success)
+						{
+						    mPreferences.setUserRegistered(true);
+						}
 						return null;
 					}
 					protected void onPostExecute(Void result) {

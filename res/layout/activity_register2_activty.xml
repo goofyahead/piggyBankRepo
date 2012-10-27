@@ -26,7 +26,7 @@
                 android:text="@string/first_name"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/pink_text" />
-
+
             <EditText
                 android:id="@+id/first_name_edit"
                 style="@style/TextFieldStyle"
@@ -34,7 +34,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/basic_edit"
                 android:ems="10"
-                android:inputType="text|textCapWords" />
+                android:inputType="text|textCapWords"
+                android:text="Teo" />
 
             <TextView
                 android:id="@+id/lastname_textview"
@@ -44,7 +45,7 @@
                 android:text="@string/last_name"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/pink_text" />
-
+
             <EditText
                 android:id="@+id/last_name_edit"
                 style="@style/TextFieldStyle"
@@ -52,7 +53,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/basic_edit"
                 android:ems="10"
-                android:inputType="text|textCapWords|phone" />
+                android:inputType="text|textCapWords|phone"
+                android:text="Martinez" />
 
             <TextView
                 android:id="@+id/street_textview"
@@ -66,7 +68,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
-
+
                 <EditText
                     android:id="@+id/street_edit"
                     style="@style/TextFieldStyle"
@@ -75,7 +77,8 @@
                     android:layout_weight="5"
                     android:background="@drawable/basic_edit"
                     android:ems="10"
-                    android:inputType="text|textPassword" >
+                    android:inputType="text"
+                    android:text="Roc de Boronat" >
 
                     <requestFocus />
                 </EditText>
@@ -91,7 +94,7 @@
                     android:text="@string/street_number"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textColor="@color/pink_text" />
-
+
                 <EditText
                     android:id="@+id/street_number_edit"
                     style="@style/TextFieldStyle"
@@ -100,7 +103,8 @@
                     android:layout_weight="10"
                     android:background="@drawable/basic_edit"
                     android:ems="10"
-                    android:inputType="textPassword" />
+                    android:inputType="text"
+                    android:text="117" />
 
             </LinearLayout>
 
@@ -112,7 +116,7 @@
                 android:text="@string/city"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/pink_text" />
-
+
             <EditText
                 android:id="@+id/city_edit"
                 style="@style/TextFieldStyle"
@@ -120,7 +124,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/basic_edit"
                 android:ems="10"
-                android:inputType="text|textCapWords|textPassword" />
+                android:inputType="text|textCapWords|textPassword"
+                android:text="Barcelona" />
 
             <TextView
                 android:id="@+id/postalcode_textview"
@@ -130,7 +135,7 @@
                 android:text="@string/postal_code"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/pink_text" />
-
+
             <EditText
                 android:id="@+id/postal_code_edit"
                 style="@style/TextFieldStyle"
@@ -138,7 +143,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/basic_edit"
                 android:ems="10"
-                android:inputType="textPassword|number" />
+                android:inputType="textPassword|number"
+                android:text="16483" />
 
             <TextView
                 android:id="@+id/country_textview"
@@ -149,7 +155,7 @@
                 android:text="@string/country"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/pink_text" />
-
+
             <EditText
                 android:id="@+id/country_edit"
                 style="@style/TextFieldStyle"
@@ -158,7 +164,8 @@
                 android:layout_marginBottom="@dimen/form_field_down_padding"
                 android:background="@drawable/basic_edit"
                 android:ems="10"
-                android:inputType="text|textCapWords|textPassword" />
+                android:inputType="text|textCapWords|textPassword"
+                android:text="Spain" />
 
         </LinearLayout>
 

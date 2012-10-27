@@ -140,9 +140,10 @@ public class CreatePiggyActivity extends RoboActivity implements OnClickListener
                     return;
                 }
                 String s = cursor.getString(numberIndex);
-                mMembers.add(mContactsProvider.getContactNameWihtNumber(s));
+                mMembers.add(s);
                 TextView textView = new TextView(CreatePiggyActivity.this);
                 textView.setText(s);
+                //textView.setText(mContactsProvider.getContactNameWihtNumber(s));
                 mMemberViews.add(textView);
                 Runnable run = new Runnable() {
                     public void run() {
@@ -177,7 +178,8 @@ public class CreatePiggyActivity extends RoboActivity implements OnClickListener
                     float amount = Float.parseFloat(mGoalEdit.getText().toString());
                     Piggy piggy = new Piggy(mNameEditText.getText().toString(), accountNumber, amount, null, null, 0,
                             mMembers, 0);
-                    mPiggyApi.createPiggyForGift(piggy, amount, null);
+                    mPiggyApi.createPiggy(piggy, mPreferences.getUserPhone());
+                    mPiggyApi.sharePiggyWith(piggy);
                     return null;
                 }
 
