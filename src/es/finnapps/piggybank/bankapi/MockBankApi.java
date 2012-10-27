@@ -2,15 +2,16 @@ package es.finnapps.piggybank.bankapi;
 
 import java.util.List;
 
+import es.finnapps.piggybank.model.Account;
 import es.finnapps.piggybank.model.Operation;
 import es.finnapps.piggybank.model.Piggy;
 import es.finnapps.piggybank.model.UserInfo;
 
 public class MockBankApi implements BankApiInterface {
 
-    public String createAccount(String token) {
+    public Account createAccount(String token) {
         // TODO Auto-generated method stub
-        return "";
+        return null;
     }
 
     public List<Operation> getOperations(String account) {
@@ -57,6 +58,17 @@ public class MockBankApi implements BankApiInterface {
     public boolean depositFunds(String token, String account) {
         // TODO Auto-generated method stub
         return false;
+    }
+
+    public boolean transferFundsForShared(String fromAccount, String toAccount, String token, String concept,
+            String userNumber, float amount) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    public String getAccountNumber(String accountId, String token) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

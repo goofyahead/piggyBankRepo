@@ -33,6 +33,7 @@ import com.google.android.gcm.server.Result;
 import com.google.android.gcm.server.Sender;
 import com.google.inject.Inject;
 
+import es.finnapps.piggybank.model.Account;
 import es.finnapps.piggybank.model.Operation;
 import es.finnapps.piggybank.model.Piggy;
 import es.finnapps.piggybank.model.UserInfo;
@@ -93,6 +94,8 @@ public class BankApi implements BankApiInterface {
     private static final String KEY_TRANSFER_AMOUNT = "value";
     private static final String KEY_ADITIONAL_DATAS = "additionalData";
     private static final String KEY_DEPOSIT_ACCOUNT = "accountNumber";
+
+    private static final String KEY_NUMBER_FROM_BANK = "accountNumber";
 
     private String CONTENT = "Content-Type";
     private JSONObject responseJson;
@@ -299,9 +302,9 @@ public class BankApi implements BankApiInterface {
             prefs.setPassword(userInfo.getPassword());
             String token = getToken();
             prefs.setToken(token);
-            String firstAccount = createAccount(token);
-            prefs.setBaseAccount(firstAccount);
-            depositFunds(token, firstAccount);
+            Account firstAccount = createAccount(token);
+            prefs.setBaseAccount(firstAccount.getAccountId());
+            depositFunds(token, firstAccount.getAccountId());
             return true;
         } else {
             return false;
@@ -330,7 +333,7 @@ public class BankApi implements BankApiInterface {
         return "";
     }
 
-    public String createAccount(String token) {
+    public Account createAccount(String token) {
         String createAccountUrl = CREATE_ACCOUNT_URL.replace(REPLACE_TOKEN, token);
         String[] names = { OFFICE_KEY, CURRENCY_KEY };
         String[] values = { FIX_OFFICE, FIX_CURRENCY };
@@ -347,7 +350,9 @@ public class BankApi implements BankApiInterface {
         try {
             JSONObject data = responseJson.getJSONObject(KEY_DATA);
             String accountNumber = data.getString(KEY_ACCOUNT_NUMBER);
-            return accountNumber;
+            String accountNumberFromBank = data.getString(KEY_NUMBER_FROM_BANK);
+            Account myAccount = new Account(accountNumber, accountNumberFromBank);
+            return myAccount;
         } catch (JSONException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -399,8 +404,8 @@ public class BankApi implements BankApiInterface {
                 String currentAccountId = data.getString(x);
                 long currentAmount = getAccountAmount(currentAccountId, token);
 
-                Piggy newPiggy = new Piggy(null, currentAccountId, currentAmount, null, null,
-                        Piggy.PIGGY_TYPE_SHARED, null, 0);
+                Piggy newPiggy = new Piggy(null, currentAccountId, currentAmount, null, null, Piggy.PIGGY_TYPE_SHARED,
+                        null, 0);
                 Log.d(TAG, "current account: " + currentAccountId);
                 Log.d(TAG, "current amount: " + newPiggy.getAmount());
             }
@@ -415,7 +420,7 @@ public class BankApi implements BankApiInterface {
         return null;
     }
 
-    public boolean transferFunds(String fromAccountId, String toAccountId, String token, String concept,
+    public boolean transferFunds(String fromAccountNumber, String toAccountNumber, String token, String concept,
             String userNumber, float amount) {
 
         String[] accountNames = { KEY_CONCEPT, KEY_PAYEE };
@@ -427,8 +432,39 @@ public class BankApi implements BankApiInterface {
             e.printStackTrace();
         }
         String[] names = { KEY_ORIGIN_ACOUNT, KEY_DESTINATION_ACCOUNT, KEY_TRANSFER_AMOUNT, KEY_ADITIONAL_DATAS };
-        Object[] values = { getAccountNumber(fromAccountId, token), getAccountNumber(toAccountId, token), amount,
-                adicionalData };
+        Object[] values = { fromAccountNumber, toAccountNumber, amount, adicionalData };
+        StringEntity entity = createJSONRequestForRegister(names, values);
+        String transferUrl = TRANSFER_MONEY_URL.replace(REPLACE_TOKEN, token);
+        HttpResponse response = callApi(transferUrl, null, HttpRequestType.post, entity, false);
+        if (response.getStatusLine().getStatusCode() == 200) {
+            JSONObject responseJson = null;
+            try {
+                responseJson = getResponseInfo(response);
+                Log.d(TAG, responseJson.toString());
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            }
+            return true;
+        } else {
+            responseJson = getResponseInfo(response);
+            Log.d(TAG, responseJson.toString());
+            return false;
+        }
+    }
+
+    public boolean transferFundsForShared(String fromAccountId, String toAccountId, String token, String concept,
+            String userNumber, float amount) {
+
+        String[] accountNames = { KEY_CONCEPT, KEY_PAYEE };
+        String[] accountValues = { concept, userNumber };
+        JSONObject adicionalData = null;
+        try {
+            adicionalData = createJsonFromParams(accountNames, accountValues);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String[] names = { KEY_ORIGIN_ACOUNT, KEY_DESTINATION_ACCOUNT, KEY_TRANSFER_AMOUNT, KEY_ADITIONAL_DATAS };
+        Object[] values = { getAccountNumber(fromAccountId, token), toAccountId, amount, adicionalData };
         StringEntity entity = createJSONRequestForRegister(names, values);
         String transferUrl = TRANSFER_MONEY_URL.replace(REPLACE_TOKEN, token);
         HttpResponse response = callApi(transferUrl, null, HttpRequestType.post, entity, false);
