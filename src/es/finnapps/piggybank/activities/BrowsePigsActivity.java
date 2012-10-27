@@ -21,11 +21,13 @@ import android.widget.BaseAdapter;
 import android.widget.Gallery;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.inject.Inject;
 
 import es.finnapps.piggybank.R;
+import es.finnapps.piggybank.bankapi.BankApiInterface;
 import es.finnapps.piggybank.model.Piggy;
 import es.finnapps.piggybank.piggyapi.PiggyApiInterface;
 import es.finnapps.piggybank.sharedprefs.PiggyBankPreferences;
@@ -48,9 +50,13 @@ public class BrowsePigsActivity extends RoboActivity implements OnItemSelectedLi
     private ImageButton mCoin100;
     @InjectView(R.id.coin200)
     private ImageButton mCoin200;
+    @InjectView(R.id.progressbar)
+    private ProgressBar mProgressBar;
 
     @Inject
-    private PiggyApiInterface mApi;
+    private PiggyApiInterface mPiggyApi;
+    @Inject
+    private BankApiInterface mBankApi;
     @Inject
     private PiggyBankPreferences mPreferences;
     private ImageView mEmptyPiggyView;
@@ -87,12 +93,15 @@ public class BrowsePigsActivity extends RoboActivity implements OnItemSelectedLi
     }
     private void initActivity() {
         new AsyncTask<Void, Void, Void>() {
+            protected void onPreExecute() {
+                mProgressBar.setVisibility(View.VISIBLE);
+            };
 
             @Override
             protected Void doInBackground(Void... params) {
                 
                 mPiggies = new ArrayList<Piggy>();
-                mPiggies.addAll(mApi.getSharedPiggys(mPreferences.getUserPhone()));
+                mPiggies.addAll(mPiggyApi.getSharedPiggys(mPreferences.getUserPhone()));
                 mPiggyViews = new ArrayList<View>();
 
                 for (int i = 0; i < mPiggies.size(); i++) {
@@ -108,6 +117,7 @@ public class BrowsePigsActivity extends RoboActivity implements OnItemSelectedLi
 
             protected void onPostExecute(Void result) {
                 mGallery.setAdapter(new PiggySpinner());
+                mProgressBar.setVisibility(View.INVISIBLE);
             };
 
         }.execute();
@@ -174,18 +184,27 @@ public class BrowsePigsActivity extends RoboActivity implements OnItemSelectedLi
                 }
             });
         }
+
+    }
+    
+    private void deposit(float amount){
+        final float _amount = amount;
         new AsyncTask<Void, Void, Void>() {
 
+            protected void onPreExecute() {
+                mProgressBar.setVisibility(View.VISIBLE);
+            };
             @Override
             protected Void doInBackground(Void... params) {
+                Piggy piggy = mPiggies.get(mGallery.getSelectedItemPosition());
+                mBankApi.transferFunds(mPreferences.getBaseAccount(), piggy.getNumber(), mPreferences.getToken(), piggy.getName(), mPreferences.getUserPhone(), _amount); 
                 return null;
             }
 
             protected void onPostExecute(Void result) {
-
+                mProgressBar.setVisibility(View.INVISIBLE);
             };
 
         }.execute();
-
     }
 }

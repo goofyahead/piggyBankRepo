@@ -175,7 +175,7 @@ public class CreatePiggyActivity extends RoboActivity implements OnClickListener
                 protected Void doInBackground(Void... params) {
                     String accountNumber= mBankApi.createAccount(mPreferences.getToken());
                     float amount = Float.parseFloat(mGoalEdit.getText().toString());
-                    Piggy piggy = new Piggy(mNameEditText.getText().toString(), accountNumber, amount , null, null, 0, mMembers);
+                    Piggy piggy = new Piggy(mNameEditText.getText().toString(), accountNumber, amount , null, null, 0, mMembers, 0);
                     mPiggyApi.createPiggyForGift(piggy, amount, null);
                     return null;
                 }

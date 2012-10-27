@@ -56,14 +56,15 @@
             android1:layout_marginTop="-20dp"
             android1:text="@string/name_your_piggy"
             android1:textAppearance="?android:attr/textAppearanceSmall" />
-
+
         <EditText
             android1:id="@+id/piggy_name_edit"
             style="@style/TextFieldStyle"
             android1:layout_width="fill_parent"
             android1:layout_height="wrap_content"
             android1:layout_below="@+id/TextView01"
-            android1:ems="10" >
+            android1:ems="10"
+            android1:inputType="text" >
 
             <requestFocus />
         </EditText>
@@ -76,7 +77,7 @@
             android1:layout_below="@+id/piggy_name_edit"
             android1:text="@string/goal"
             android1:textAppearance="?android:attr/textAppearanceSmall" />
-
+
         <EditText
             android1:id="@+id/goal_edit"
             style="@style/TextFieldStyle"
@@ -85,7 +86,8 @@
             android1:layout_alignBaseline="@+id/TextView02"
             android1:layout_marginLeft="15dp"
             android1:layout_toRightOf="@+id/TextView02"
-            android1:ems="10" />
+            android1:ems="10"
+            android1:inputType="text|number" />
 
         <ListView
             android1:id="@+id/membersListView"

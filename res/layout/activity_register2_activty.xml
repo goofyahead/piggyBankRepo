@@ -17,15 +17,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical" >
-
-            <EditText
-                android:id="@+id/EditText01"
-                style="@style/TextFieldStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/basic_edit"
-                android:ems="10"
-                android:inputType="textPassword" />
 
             <TextView
                 android:id="@+id/firstname_textview"
@@ -53,7 +44,7 @@
                 android:text="@string/last_name"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/pink_text" />
-
+
             <EditText
                 android:id="@+id/last_name_edit"
                 style="@style/TextFieldStyle"
@@ -61,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/basic_edit"
                 android:ems="10"
-                android:inputType="phone" />
+                android:inputType="text|textCapWords|phone" />
 
             <TextView
                 android:id="@+id/street_textview"
@@ -121,7 +112,7 @@
                 android:text="@string/city"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/pink_text" />
-
+
             <EditText
                 android:id="@+id/city_edit"
                 style="@style/TextFieldStyle"
@@ -129,7 +120,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/basic_edit"
                 android:ems="10"
-                android:inputType="textPassword" />
+                android:inputType="text|textCapWords|textPassword" />
 
             <TextView
                 android:id="@+id/postalcode_textview"
@@ -139,7 +130,7 @@
                 android:text="@string/postal_code"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/pink_text" />
-
+
             <EditText
                 android:id="@+id/postal_code_edit"
                 style="@style/TextFieldStyle"
@@ -147,7 +138,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/basic_edit"
                 android:ems="10"
-                android:inputType="textPassword" />
+                android:inputType="textPassword|number" />
 
             <TextView
                 android:id="@+id/country_textview"
@@ -158,7 +149,7 @@
                 android:text="@string/country"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/pink_text" />
-
+
             <EditText
                 android:id="@+id/country_edit"
                 style="@style/TextFieldStyle"
@@ -167,7 +158,7 @@
                 android:layout_marginBottom="@dimen/form_field_down_padding"
                 android:background="@drawable/basic_edit"
                 android:ems="10"
-                android:inputType="textPassword" />
+                android:inputType="text|textCapWords|textPassword" />
 
         </LinearLayout>
 
