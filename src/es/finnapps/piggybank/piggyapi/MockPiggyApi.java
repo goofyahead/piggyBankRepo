@@ -49,4 +49,14 @@ public class MockPiggyApi implements PiggyApiInterface {
         return false;
     }
 
+    public boolean registerUser(String userName, String phoneNumber) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    public List<Piggy> getMyPiggys(String phoneNumber) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }
