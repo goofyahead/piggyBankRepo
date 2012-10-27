@@ -9,7 +9,6 @@ import android.preference.PreferenceManager;
 public class PiggyBankPreferences {
 
     private static final String USER_PHONE_NUMBER = "phone_number";
-    private static final String USER_AUTH_TOKEN = "auth_token";
     private static final String USER_NAME_TOKEN = "user_name";
     private static final String PASSWORD= "password";
     private static final String USER_PRETTY_NAME = "pretty_name";
@@ -53,14 +52,6 @@ public class PiggyBankPreferences {
 
     public void setUserName(String userAuthToken) {
         prefs.edit().putString(USER_NAME_TOKEN, userAuthToken).commit();
-    }
-    
-    public String getUserAuthToken (){
-        return prefs.getString(USER_AUTH_TOKEN, "");
-    }
-
-    public void setUserAuthToken(String userAuthToken) {
-        prefs.edit().putString(USER_AUTH_TOKEN, userAuthToken).commit();
     }
 
     public String getUserPrettyName (){

@@ -48,7 +48,8 @@ public class BankApi implements BankApiInterface {
     private String GET_ACCOUNTS_URL = API_URL + API_KEY + "/" + REPLACE_TOKEN + "/operations/account/list";
     private String GET_ACCOUNT_AMOUNT = API_URL + API_KEY + "/" + REPLACE_TOKEN + "/operations/account/"
             + REPLACE_ACCOUNT_ID;
-    private String TRANSFER_MONEY_URL = API_URL + API_KEY + "/" + REPLACE_TOKEN + "/operations/account/tranfer";
+    private String TRANSFER_MONEY_URL = API_URL + API_KEY + "/" + REPLACE_TOKEN + "/operations/account/transfer";
+    private String DEPOSIT_URL =  API_URL + API_KEY + "/" + REPLACE_TOKEN + "/operations/account/deposit";
 
     @Inject
     private PiggyBankPreferences prefs;
@@ -78,6 +79,7 @@ public class BankApi implements BankApiInterface {
     private static final String FIX_OFFICE = "508a8989e4b0a7694d240e9b";
     private static final String FIX_CURRENCY = "EURO";
     private static final String KEY_ACCOUNT_NUMBER = "id";
+    private static final String KEY_ACCOUNT_LONG_NUMBER = "accountNumber";
     private static final String KEY_DATA = "data";
     private static final String KEY_AMOUNT = "actualBalance";
     private static final String KEY_CONCEPT = "concept";
@@ -86,6 +88,9 @@ public class BankApi implements BankApiInterface {
     private static final String KEY_DESTINATION_ACCOUNT = "destinationAccount";
     private static final String KEY_TRANSFER_AMOUNT = "value";
     private static final String KEY_ADITIONAL_DATAS = "additionalData";
+    private static final String KEY_DEPOSIT_ACCOUNT = "accountNumber";
+
+  
 
     private String CONTENT = "Content-Type";
     private JSONObject responseJson;
@@ -288,10 +293,38 @@ public class BankApi implements BankApiInterface {
         HttpResponse response = callApi(CREATE_CLIENT_URL, getBasicHeaders(), HttpRequestType.post, entity, false);
 
         if (response.getStatusLine().getStatusCode() == 200) {
+            prefs.setUserName(userInfo.getUserName());
+            prefs.setPassword(userInfo.getPassword());
+            String token = getToken();           
+            prefs.setToken(token);
+            String firstAccount = createAccount(token);
+            depositFunds(token, firstAccount);
             return true;
         } else {
             return false;
         }
+    }
+
+    public String getAccountNumber (String accountId, String token) {
+        String getAccountAmount = GET_ACCOUNT_AMOUNT.replace(REPLACE_ACCOUNT_ID, accountId);
+        String getAccountAmountWithToken = getAccountAmount.replace(REPLACE_TOKEN, token);
+        HttpResponse response = callApi(getAccountAmountWithToken, null, HttpRequestType.get, null, true);
+
+        JSONObject responseJson = null;
+        try {
+            responseJson = getResponseInfo(response);
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            JSONObject data = responseJson.getJSONObject(KEY_DATA);
+            String accountNumber = data.getString(KEY_ACCOUNT_LONG_NUMBER);
+            return accountNumber;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     public String createAccount(String token) {
@@ -377,7 +410,7 @@ public class BankApi implements BankApiInterface {
         return null;
     }
 
-    public boolean transferFunds(String fromAccount, String toAccount, String token, String concept, String userNumber, float amount) {
+    public boolean transferFunds(String fromAccountId, String toAccountId, String token, String concept, String userNumber, float amount) {
         String[] accountNames = { KEY_CONCEPT, KEY_PAYEE };
         String[] accountValues = { concept, userNumber};
         JSONObject adicionalData = null;
@@ -387,15 +420,52 @@ public class BankApi implements BankApiInterface {
             e.printStackTrace();
         }
         String[] names = { KEY_ORIGIN_ACOUNT, KEY_DESTINATION_ACCOUNT, KEY_TRANSFER_AMOUNT, KEY_ADITIONAL_DATAS };
-        Object[] values = { fromAccount, toAccount, amount, adicionalData };
+        Object[] values = { getAccountNumber(fromAccountId, token), getAccountNumber(toAccountId, token), amount, adicionalData };
         StringEntity entity = createJSONRequestForRegister(names, values);
-        callApi(TRANSFER_MONEY_URL, null, HttpRequestType.post, entity, false);
-        return false;
+        String transferUrl = TRANSFER_MONEY_URL.replace(REPLACE_TOKEN, token);
+        HttpResponse response = callApi(transferUrl, null, HttpRequestType.post, entity, false);
+        if (response.getStatusLine().getStatusCode() == 200) {
+            JSONObject responseJson = null;
+            try {
+                responseJson = getResponseInfo(response);
+                Log.d(TAG, responseJson.toString());
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            }
+            return true;
+        } else {
+            responseJson = getResponseInfo(response);
+            Log.d(TAG, responseJson.toString());
+            return false;
+        }
     }
 
-    public boolean depositFunds(String token, float amount) {
-        // TODO Auto-generated method stub
-        return false;
+    public boolean depositFunds(String token, String account) {
+        String[] accountNames = { KEY_CONCEPT, KEY_PAYEE };
+        String[] accountValues = { "initial commit", "dios del capital"};
+        JSONObject adicionalData = null;
+        try {
+            adicionalData = createJsonFromParams(accountNames, accountValues);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String[] names = { KEY_DEPOSIT_ACCOUNT, KEY_TRANSFER_AMOUNT, KEY_ADITIONAL_DATAS };
+        Object[] values = { getAccountNumber(account, token), 1234.50, adicionalData };
+        StringEntity entity = createJSONRequestForRegister(names, values);
+        String depositFundsUrl = DEPOSIT_URL.replace(REPLACE_TOKEN, token);
+        HttpResponse response = callApi(depositFundsUrl, null, HttpRequestType.post, entity, false);
+        if (response.getStatusLine().getStatusCode() == 200) {
+            JSONObject responseJson = null;
+            try {
+                responseJson = getResponseInfo(response);
+                Log.d(TAG, responseJson.toString());
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            }
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public String getToken() {
