@@ -75,9 +75,9 @@ public class Register2Activty extends RoboActivity {
 								countryEdit.getText().toString());
 						
 						mPreferences.setUserName(userInfo.getUserName());
-						mPreferences.setUserPhoneNumber(userInfo.getNumber());
+						mPreferences.setUserPhoneNumber( getIntent().getStringExtra(RegisterActivty.EXTRA_PHONE));
 						bankApi.registerClient(userInfo);
-						boolean success = mPiggyApi.registerUser(userInfo.getNumber(), userInfo.getNumber());
+						boolean success = mPiggyApi.registerUser(getIntent().getStringExtra(RegisterActivty.EXTRA_PHONE), getIntent().getStringExtra(RegisterActivty.EXTRA_PHONE));
 						if (success)
 						{
 						    mPreferences.setUserRegistered(true);

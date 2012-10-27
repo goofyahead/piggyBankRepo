@@ -325,7 +325,7 @@ public class PiggyApi implements PiggyApiInterface{
         for(int i = 0; i <telephones.size(); i++){
             
             String[] userKeys = { KEY_TELEPHONE, KEY_ACCOUNT_NUMBER};
-            String[] userValues = { piggy.getNumber(), telephones.get(i)};
+            String[] userValues = { telephones.get(i),piggy.getNumber()};
             JSONObject userJson = null;
             try {
                 userJson = createJsonFromParams(userKeys, userValues);

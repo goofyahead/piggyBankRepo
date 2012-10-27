@@ -7,7 +7,6 @@ import java.util.Locale;
 
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
-import android.app.Dialog;
 import android.content.Intent;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
@@ -26,8 +25,11 @@ import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Gallery;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -64,6 +66,13 @@ public class BrowsePigsActivity extends RoboActivity implements CreateNdefMessag
     private ImageButton mCoin200;
     @InjectView(R.id.progressbar)
     private ProgressBar mProgressBar;
+    
+    @InjectView(R.id.amount_edit)
+    private EditText amountDeposit;
+    
+    @InjectView(R.id.donate_button)
+    private Button deposit;
+    
     private NfcAdapter mNfcAdapter;
     private Piggy currentPiggy = null;
 
@@ -91,17 +100,89 @@ public class BrowsePigsActivity extends RoboActivity implements CreateNdefMessag
 
         mGallery.setOnItemSelectedListener(this);
 
-        mCoin1.setOnClickListener(this);
-        mCoin2.setOnClickListener(this);
-        mCoin20.setOnClickListener(this);
-        mCoin50.setOnClickListener(this);
-        mCoin100.setOnClickListener(this);
-        mCoin200.setOnClickListener(this);
+       mCoin1.setOnClickListener(new OnClickListener() {
+            
+            public void onClick(View v) {
+                deposit(1);
+            }
+        });
+
+        mCoin2.setOnClickListener(new OnClickListener() {
+            
+            public void onClick(View v) {
+                deposit(2);
+            }
+        });
+        mCoin20.setOnClickListener(new OnClickListener() {
+            
+            public void onClick(View v) {
+                deposit(20);
+            }
+        });
+        mCoin50.setOnClickListener(new OnClickListener() {
+            
+            public void onClick(View v) {
+                deposit(50);
+            }
+        });
+        mCoin100.setOnClickListener(new OnClickListener() {
+            
+            public void onClick(View v) {
+                deposit(100);
+            }
+        });
+        mCoin200.setOnClickListener(new OnClickListener() {
+            
+            public void onClick(View v) {
+                deposit(200);
+            }
+        });
+
+        deposit.setOnClickListener(new OnClickListener() {
+            
+            public void onClick(View v) {
+                deposit(Long.parseLong(amountDeposit.getText().toString()));
+            }
+        });
+
 
         // Empty piggy, for creating new piggy
         mEmptyPiggyView = new ImageView(BrowsePigsActivity.this);
         mEmptyPiggyView.setImageResource(R.drawable.nuevo_piggy);
-        mEmptyPiggyView.setOnClickListener(BrowsePigsActivity.this);
+        //mEmptyPiggyView.setOnClickListener(BrowsePigsActivity.this);
+        mGallery.setOnItemClickListener(new OnItemClickListener() {
+
+            public void onItemClick(AdapterView<?> arg0, final View v, int arg2, long arg3) {
+                if (v == mEmptyPiggyView) {
+                    
+                    Animation scaleAnim = AnimationUtils.loadAnimation(BrowsePigsActivity.this, R.anim.coin_click);
+                    scaleAnim.setAnimationListener(new AnimationListener() {
+
+                        public void onAnimationStart(Animation animation) {
+                            // TODO Auto-generated method stub
+
+                        }
+
+                        public void onAnimationRepeat(Animation animation) {
+                            // TODO Auto-generated method stub
+
+                        }
+
+                        public void onAnimationEnd(Animation animation) {
+                            startActivity(new Intent(BrowsePigsActivity.this, CreatePiggyActivity.class));
+                        }
+                    });
+                    v.startAnimation(scaleAnim);
+                    
+                } 
+                else {
+                    ((ImageView)v).setImageResource(R.drawable.nuevo_cerdo_nfc_hoover);
+                }
+                
+               Toast.makeText(BrowsePigsActivity.this, "hello", Toast.LENGTH_SHORT).show(); 
+            }
+            
+        });
 
         initActivity();
     }
@@ -126,8 +207,8 @@ public class BrowsePigsActivity extends RoboActivity implements CreateNdefMessag
                 mPiggyViews = new ArrayList<View>();
 
                 for (int i = 0; i < mPiggies.size(); i++) {
-                    ImageView view = new ImageView(BrowsePigsActivity.this);
-                    view.setImageResource(R.drawable.cerdo_galeria);
+                    final ImageView view = new ImageView(BrowsePigsActivity.this);
+                    view.setImageResource(R.drawable.nuevo_cerdo_nfc);
                     mPiggyViews.add(view);
                 }
                 // Add empty piggy
@@ -193,24 +274,7 @@ public class BrowsePigsActivity extends RoboActivity implements CreateNdefMessag
         Animation scaleAnim = AnimationUtils.loadAnimation(this, R.anim.coin_click);
         v.startAnimation(scaleAnim);
 
-        if (v == mEmptyPiggyView) {
-            scaleAnim.setAnimationListener(new AnimationListener() {
-
-                public void onAnimationStart(Animation animation) {
-                    // TODO Auto-generated method stub
-
-                }
-
-                public void onAnimationRepeat(Animation animation) {
-                    // TODO Auto-generated method stub
-
-                }
-
-                public void onAnimationEnd(Animation animation) {
-                    startActivity(new Intent(BrowsePigsActivity.this, CreatePiggyActivity.class));
-                }
-            });
-        }
+       
         if (v == mCoin200)
         {
             shareAndRequest("account1234", -1);
@@ -247,7 +311,8 @@ public class BrowsePigsActivity extends RoboActivity implements CreateNdefMessag
         sb.append(currentPiggy.getAmountToShare());
         NdefMessage msg = new NdefMessage(new NdefRecord[] { createMimeRecord(
                 "application/com.doorthing.door",
-                currentPiggy.getNumber().getBytes())
+                (currentPiggy.getNumber()+":"+currentPiggy.getAmountToShare()).getBytes())
+//               sb.toString().getBytes())
         });
         return msg;
     }
@@ -333,6 +398,7 @@ public class BrowsePigsActivity extends RoboActivity implements CreateNdefMessag
 
     private void shareAndRequest(String account, float amount) {
         final float _amount = amount;
+        final String _account = account;
        new AsyncTask<Void, Void, Void>(){
             
            
@@ -343,7 +409,10 @@ public class BrowsePigsActivity extends RoboActivity implements CreateNdefMessag
         @Override
         protected Void doInBackground(Void... params) {
             // share piggy
-            //mPiggyApi.sharePiggyWith(piggy);
+            List<String> shared = new ArrayList<String>();
+            shared.add(mPreferences.getUserPhone());
+           Piggy piggy = new Piggy(null, _account, 0, null, null, 0, shared, _amount);
+           mPiggyApi.sharePiggyWith(piggy);
             return null;
         };
         protected void onPostExecute(Void result) {

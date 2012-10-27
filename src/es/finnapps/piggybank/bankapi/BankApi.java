@@ -27,6 +27,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.google.android.gcm.server.Message;
+import com.google.android.gcm.server.MulticastResult;
+import com.google.android.gcm.server.Result;
+import com.google.android.gcm.server.Sender;
 import com.google.inject.Inject;
 
 import es.finnapps.piggybank.model.Operation;
@@ -413,6 +417,7 @@ public class BankApi implements BankApiInterface {
 
     public boolean transferFunds(String fromAccountId, String toAccountId, String token, String concept,
             String userNumber, float amount) {
+
         String[] accountNames = { KEY_CONCEPT, KEY_PAYEE };
         String[] accountValues = { concept, userNumber };
         JSONObject adicionalData = null;

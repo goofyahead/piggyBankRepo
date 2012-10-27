@@ -35,5 +35,6 @@
     <string name="accept_transfer">Allow %s eurs transfer?</string>
     <string name="pig_shared_with_you">Pig shared with you</string>
     <string name="attention_nfc">Attention</string>
+    
 
 </resources>
