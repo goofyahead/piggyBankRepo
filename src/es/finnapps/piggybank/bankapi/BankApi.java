@@ -397,12 +397,13 @@ public class BankApi implements BankApiInterface {
             JSONArray data = responseJson.getJSONArray(KEY_DATA);
             for (int x = 0; x < data.length(); x++) {
                 String currentAccountId = data.getString(x);
+                //String currentAccountNumber = data.getString(x);
                 long currentAmount = getAccountAmount(currentAccountId, token);
 
-                Piggy newPiggy = new Piggy(null, currentAccountId, currentAmount, null, null,
-                        Piggy.PIGGY_TYPE_SHARED, null, 0);
-                Log.d(TAG, "current account: " + currentAccountId);
-                Log.d(TAG, "current amount: " + newPiggy.getAmount());
+                //Piggy newPiggy = new Piggy(null, currentAccountId, currentAmount, null, null,
+                 //       Piggy.PIGGY_TYPE_SHARED, null, data.getString(""), 0);
+                //Log.d(TAG, "current account: " + currentAccountId);
+                //Log.d(TAG, "current amount: " + newPiggy.getAmount());
             }
         } catch (JSONException e) {
             e.printStackTrace();
