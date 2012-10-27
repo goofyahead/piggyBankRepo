@@ -77,10 +77,14 @@ public class BrowsePigsActivity extends RoboActivity implements OnItemSelectedLi
         mEmptyPiggyView.setOnClickListener(BrowsePigsActivity.this);
 
       
+        initActivity();
     }
     
     @Override
     protected void onRestart() {
+        initActivity();
+    }
+    private void initActivity() {
         new AsyncTask<Void, Void, Void>() {
 
             @Override
