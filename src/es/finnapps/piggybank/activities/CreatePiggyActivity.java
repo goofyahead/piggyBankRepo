@@ -177,7 +177,7 @@ public class CreatePiggyActivity extends RoboActivity implements OnClickListener
                     float amount = Float.parseFloat(mGoalEdit.getText().toString());
                     Piggy piggy = new Piggy(mNameEditText.getText().toString(), accountNumber, amount, null, null, 0,
                             mMembers, 0);
-                    mPiggyApi.createPiggyForGift(piggy, amount, null);
+                    mPiggyApi.createPiggy(piggy, mPreferences.getUserPhone());
                     return null;
                 }
 
