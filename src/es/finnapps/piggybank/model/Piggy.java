@@ -18,6 +18,7 @@ public class Piggy {
     private Date expiration;
     private String objectiveName;
     private float objectiveAmount;
+    private float amountToShare; // <=0 if no amount defined
     private List<String> shared;
     private int type;
     private int id;
@@ -104,6 +105,16 @@ public class Piggy {
 
     public void setObjectiveAmount(float objectiveAmount) {
         this.objectiveAmount = objectiveAmount;
+    }
+
+
+    public float getAmountToShare() {
+        return amountToShare;
+    }
+
+
+    public void setAmountToShare(float amountToShare) {
+        this.amountToShare = amountToShare;
     }
 
 

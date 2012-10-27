@@ -237,7 +237,9 @@ public class BrowsePigsActivity extends RoboActivity implements CreateNdefMessag
     }
 
     public NdefMessage createNdefMessage(NfcEvent event) {
-
+        StringBuilder sb = new StringBuilder(currentPiggy.getNumber());
+        sb.append(":");
+        sb.append(currentPiggy.getAmountToShare());
         NdefMessage msg = new NdefMessage(new NdefRecord[] { createMimeRecord(
                 "application/com.doorthing.door",
                 currentPiggy.getNumber().getBytes())
@@ -295,10 +297,71 @@ public class BrowsePigsActivity extends RoboActivity implements CreateNdefMessag
         Parcelable[] rawMsgs = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
         // only one message sent during the beam
         NdefMessage msg = (NdefMessage) rawMsgs[0];
-        Toast.makeText(this, "Cerdito compartido contigo " + new String(msg.getRecords()[0].getPayload()),
-                Toast.LENGTH_LONG).show();
+        String s =  new String(msg.getRecords()[0].getPayload());
+        int limiterIndex = s.indexOf(':');
+        if (limiterIndex == -1)
+        {
+            Log.e("Browse", "No colon in NFC message.");
+            return false;
+        }
+        if (limiterIndex == 0)
+        {
+            Log.e("Browse", "No phonenumber in NFC message.");
+            return false;
+        }
+        if (limiterIndex == s.length()-1)
+        {
+            Log.e("Browse", "No amount in NFC message.");
+            return false;
+        }
+        
+        String account = s.substring(0, limiterIndex);
+        float amount= Float.parseFloat(s.substring(limiterIndex+1, s.length()));
+        
+        shareAndRequest(account,amount);
+       
+        
 
         // record 0 contains the MIME type, record 1 is the AAR, if present
         return true;
+    }
+
+    private void shareAndRequest(String account, float amount) {
+        final float _amount = amount;
+       new AsyncTask<Void, Void, Void>(){
+            
+           
+           protected void onPreExecute() {
+               mProgressBar.setVisibility(View.VISIBLE);
+           }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            // share piggy
+            //mPiggyApi.sharePiggyWith(piggy);
+            return null;
+        };
+        protected void onPostExecute(Void result) {
+               mProgressBar.setVisibility(View.VISIBLE);
+            
+               if (_amount <= 0)
+               {
+                   // No amount
+                   Toast.makeText(BrowsePigsActivity.this, BrowsePigsActivity.this.getString(R.string.pig_shared_with_you),
+                           Toast.LENGTH_LONG).show();
+               }
+               else {
+                   MyDialogAlert newFragment = MyDialogAlert.newInstance(R.string.attention_nfc,
+                           R.string.accept_transfer,new Runnable() {
+                            
+                            public void run() {
+                                // Positive action: transaction
+                            }
+                        },null);
+                   newFragment.show(getFragmentManager(), "dialog"); 
+               }
+                           
+        };
+       }.execute();
     }
 }
