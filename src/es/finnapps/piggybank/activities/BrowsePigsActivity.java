@@ -274,11 +274,6 @@ public class BrowsePigsActivity extends RoboActivity implements CreateNdefMessag
         Animation scaleAnim = AnimationUtils.loadAnimation(this, R.anim.coin_click);
         v.startAnimation(scaleAnim);
 
-       
-        if (v == mCoin200)
-        {
-            shareAndRequest("account1234", -1);
-        }
 
     }
 
@@ -306,13 +301,9 @@ public class BrowsePigsActivity extends RoboActivity implements CreateNdefMessag
     }
 
     public NdefMessage createNdefMessage(NfcEvent event) {
-        StringBuilder sb = new StringBuilder(currentPiggy.getNumber());
-        sb.append(":");
-        sb.append(currentPiggy.getAmountToShare());
         NdefMessage msg = new NdefMessage(new NdefRecord[] { createMimeRecord(
                 "application/com.doorthing.door",
-                (currentPiggy.getNumber()+":"+currentPiggy.getAmountToShare()).getBytes())
-//               sb.toString().getBytes())
+                (currentPiggy.getNumber()+":"+amountDeposit.getText().toString()).getBytes())
         });
         return msg;
     }

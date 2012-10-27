@@ -103,7 +103,7 @@
                     android:layout_weight="10"
                     android:background="@drawable/basic_edit"
                     android:ems="10"
-                    android:inputType="text"
+                    android:inputType="number"
                     android:text="117" />
 
             </LinearLayout>
@@ -135,7 +135,7 @@
                 android:text="@string/postal_code"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/pink_text" />
-
+
             <EditText
                 android:id="@+id/postal_code_edit"
                 style="@style/TextFieldStyle"
@@ -143,8 +143,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/basic_edit"
                 android:ems="10"
-                android:inputType="textPassword|number"
-                android:text="16483" />
+                android:inputType="textPassword|number" />
 
             <TextView
                 android:id="@+id/country_textview"
@@ -155,7 +154,7 @@
                 android:text="@string/country"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/pink_text" />
-
+
             <EditText
                 android:id="@+id/country_edit"
                 style="@style/TextFieldStyle"
@@ -164,8 +163,7 @@
                 android:layout_marginBottom="@dimen/form_field_down_padding"
                 android:background="@drawable/basic_edit"
                 android:ems="10"
-                android:inputType="text|textCapWords|textPassword"
-                android:text="Spain" />
+                android:inputType="text|textCapWords|textPassword" />
 
         </LinearLayout>
 
