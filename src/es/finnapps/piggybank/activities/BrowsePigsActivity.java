@@ -238,8 +238,10 @@ public class BrowsePigsActivity extends RoboActivity implements CreateNdefMessag
 
     public NdefMessage createNdefMessage(NfcEvent event) {
 
-        NdefMessage msg = new NdefMessage(new NdefRecord[] { createTextRecord(currentPiggy.getNumber(),
-                Locale.getDefault(), true) });
+        NdefMessage msg = new NdefMessage(new NdefRecord[] { createMimeRecord(
+                "application/com.doorthing.door",
+                currentPiggy.getNumber().getBytes())
+        });
         return msg;
     }
 
