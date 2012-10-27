@@ -36,9 +36,9 @@
             android1:layout_width="wrap_content"
             android1:layout_height="wrap_content"
             android1:src="@drawable/piggy_compartido" />
-
+
         <TextView
-            android1:id="@+id/piggy_name_edit"
+            android1:id="@+id/piggy_text"
             android1:layout_width="wrap_content"
             android1:layout_height="wrap_content"
             android1:layout_marginTop="50dp"
@@ -86,13 +86,13 @@
             android1:layout_marginLeft="15dp"
             android1:layout_toRightOf="@+id/TextView02"
             android1:ems="10" />
-
+
         <ListView
             android1:id="@+id/membersListView"
             android1:layout_width="match_parent"
             android1:layout_height="wrap_content"
             android1:layout_below="@+id/goal_edit"
-            android1:layout_marginBottom="150dp"
+            android1:layout_marginBottom="15dp"
             android1:layout_marginTop="280dp"
             android1:layout_weight="1"
             android1:background="@drawable/background_member_list" >
@@ -106,13 +106,12 @@
             android1:layout_height="wrap_content"
             android1:layout_below="@id/membersListView"
             android1:text="@string/add" />
-
+
         <Button
             android1:id="@+id/ok_button"
             style="@style/ButtonStyle"
             android1:layout_width="wrap_content"
             android1:layout_height="wrap_content"
-            android1:layout_alignParentBottom="true"
             android1:layout_below="@id/membersListView"
             android1:layout_marginLeft="15dp"
             android1:layout_toRightOf="@+id/add_button"

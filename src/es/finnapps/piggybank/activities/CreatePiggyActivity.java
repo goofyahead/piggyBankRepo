@@ -71,6 +71,7 @@ public class CreatePiggyActivity extends RoboActivity implements OnClickListener
         mMembers = new ArrayList<String>();
         mMemberViews = new ArrayList<View>();
         mAddButton.setOnClickListener(this);
+        mOkButton.setOnClickListener(this);
         mMembersAdapter = new MembersAdapter();
         mMembersListView.setAdapter(mMembersAdapter);
     }

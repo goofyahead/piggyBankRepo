@@ -7,6 +7,7 @@
         android:minSdkVersion="14"
         android:targetSdkVersion="15" />
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
 
     <application
         android:name="es.finnapps.piggybank.roboguice.PiggyBankAplication"

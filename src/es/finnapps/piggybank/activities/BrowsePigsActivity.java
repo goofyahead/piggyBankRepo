@@ -82,6 +82,7 @@ public class BrowsePigsActivity extends RoboActivity implements OnItemSelectedLi
     
     @Override
     protected void onRestart() {
+        super.onRestart();
         initActivity();
     }
     private void initActivity() {
@@ -89,8 +90,6 @@ public class BrowsePigsActivity extends RoboActivity implements OnItemSelectedLi
 
             @Override
             protected Void doInBackground(Void... params) {
-                mPiggies.clear();
-                mPiggyViews.clear();
                 
                 mPiggies = new ArrayList<Piggy>();
                 mPiggies.addAll(mApi.getSharedPiggys(mPreferences.getUserPhone()));
