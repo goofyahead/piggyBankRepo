@@ -27,6 +27,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Gallery;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -34,6 +36,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gcm.GCMRegistrar;
 import com.google.inject.Inject;
 
 import es.finnapps.piggybank.R;
@@ -45,6 +48,7 @@ import es.finnapps.piggybank.sharedprefs.PiggyBankPreferences;
 public class BrowsePigsActivity extends RoboActivity implements CreateNdefMessageCallback, OnItemSelectedListener,
         OnClickListener {
 
+    private static final String TAG = BrowsePigsActivity.class.getName();
     @InjectView(R.id.gallery)
     private Gallery mGallery;
     @InjectView(R.id.piggy_name_textview)
@@ -63,6 +67,10 @@ public class BrowsePigsActivity extends RoboActivity implements CreateNdefMessag
     private ImageButton mCoin200;
     @InjectView(R.id.progressbar)
     private ProgressBar mProgressBar;
+    @InjectView(R.id.donate_button)
+    private Button deposit;
+    @InjectView(R.id.amount_edit)
+    private EditText amountDeposit;
     private NfcAdapter mNfcAdapter;
     private Piggy currentPiggy = null;
 
@@ -81,6 +89,15 @@ public class BrowsePigsActivity extends RoboActivity implements CreateNdefMessag
         super.onCreate(savedInstanceState);
         setContentView(R.layout.browse_pigs_activity);
 
+        GCMRegistrar.checkDevice(this);
+        GCMRegistrar.checkManifest(this);
+        final String regId = GCMRegistrar.getRegistrationId(this);
+        if (regId.equals("")) {
+          GCMRegistrar.register(this, "1068425984621");
+        } else {
+          Log.v(TAG, "Already registered");
+        }
+
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
         if (mNfcAdapter == null) {
             Toast.makeText(this, "NFC is not available", Toast.LENGTH_LONG).show();
@@ -90,12 +107,50 @@ public class BrowsePigsActivity extends RoboActivity implements CreateNdefMessag
 
         mGallery.setOnItemSelectedListener(this);
 
-        mCoin1.setOnClickListener(this);
-        mCoin2.setOnClickListener(this);
-        mCoin20.setOnClickListener(this);
-        mCoin50.setOnClickListener(this);
-        mCoin100.setOnClickListener(this);
-        mCoin200.setOnClickListener(this);
+        mCoin1.setOnClickListener(new OnClickListener() {
+            
+            public void onClick(View v) {
+                deposit(1);
+            }
+        });
+
+        mCoin2.setOnClickListener(new OnClickListener() {
+            
+            public void onClick(View v) {
+                deposit(2);
+            }
+        });
+        mCoin20.setOnClickListener(new OnClickListener() {
+            
+            public void onClick(View v) {
+                deposit(20);
+            }
+        });
+        mCoin50.setOnClickListener(new OnClickListener() {
+            
+            public void onClick(View v) {
+                deposit(50);
+            }
+        });
+        mCoin100.setOnClickListener(new OnClickListener() {
+            
+            public void onClick(View v) {
+                deposit(100);
+            }
+        });
+        mCoin200.setOnClickListener(new OnClickListener() {
+            
+            public void onClick(View v) {
+                deposit(200);
+            }
+        });
+
+        deposit.setOnClickListener(new OnClickListener() {
+            
+            public void onClick(View v) {
+                deposit(Long.parseLong(amountDeposit.getText().toString()));
+            }
+        });
 
         // Empty piggy, for creating new piggy
         mEmptyPiggyView = new ImageView(BrowsePigsActivity.this);

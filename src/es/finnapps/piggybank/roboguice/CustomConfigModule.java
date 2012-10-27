@@ -6,7 +6,6 @@ import com.google.inject.AbstractModule;
 
 import es.finnapps.piggybank.bankapi.BankApi;
 import es.finnapps.piggybank.bankapi.BankApiInterface;
-import es.finnapps.piggybank.bankapi.MockBankApi;
 import es.finnapps.piggybank.contacts.ContactsProvider;
 import es.finnapps.piggybank.piggyapi.MockPiggyApi;
 import es.finnapps.piggybank.piggyapi.PiggyApiInterface;
@@ -24,5 +23,6 @@ public class CustomConfigModule extends AbstractModule {
 
         bind(PiggyApiInterface.class).toInstance(piggyApi);
         bind(BankApiInterface.class).toInstance(bankApi);
+        bind(ContactsProvider.class).toInstance(contacts);
     }
 }
