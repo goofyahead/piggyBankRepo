@@ -6,9 +6,10 @@
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="15" />
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.READ_CONTACTS"/>
-    <uses-permission android:name="android.permission.NFC"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.NFC" />
 
     <application
         android:name="es.finnapps.piggybank.roboguice.PiggyBankAplication"
@@ -17,8 +18,8 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".activities.SplashScreen"
-            android:screenOrientation="portrait" 
-            android:label="@string/title_activity_splash_screen" >
+            android:label="@string/title_activity_splash_screen"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,9 +29,11 @@
         <activity
             android:name=".activities.BrowsePigsActivity"
             android:label="@string/title_activity_browse_pigs_activicity" >
-             <intent-filter>
+            <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="application/com.doorthing.door" />
             </intent-filter>
         </activity>
@@ -56,4 +59,5 @@
             </intent-filter>
         </activity>
     </application>
+
 </manifest>

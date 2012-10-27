@@ -169,21 +169,23 @@ public class CreatePiggyActivity extends RoboActivity implements OnClickListener
             startActivityForResult(intent, PICK_CONTACT_REQUEST_CODE);
         }
         if (v == mOkButton) {
-            new AsyncTask<Void, Void, Void>(){
+            new AsyncTask<Void, Void, Void>() {
 
                 @Override
                 protected Void doInBackground(Void... params) {
-                    String accountNumber= mBankApi.createAccount(mPreferences.getToken());
+                    String accountNumber = mBankApi.createAccount(mPreferences.getToken());
                     float amount = Float.parseFloat(mGoalEdit.getText().toString());
-                    Piggy piggy = new Piggy(mNameEditText.getText().toString(), accountNumber, amount , null, null, 0, mMembers, 0);
+                    Piggy piggy = new Piggy(mNameEditText.getText().toString(), accountNumber, amount, null, null, 0,
+                            mMembers, 0);
                     mPiggyApi.createPiggyForGift(piggy, amount, null);
                     return null;
                 }
+
                 protected void onPostExecute(Void result) {
                     finish();
-                    };
-                }.execute();
-            
+                };
+            }.execute();
+
         }
     }
 
