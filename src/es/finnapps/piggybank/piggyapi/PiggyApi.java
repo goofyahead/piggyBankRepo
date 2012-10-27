@@ -64,6 +64,7 @@ public class PiggyApi implements PiggyApiInterface{
     private static final String KEY_AMOUNT = "amount";
     private static final String KEY_TELEPHONE = "telephone";
     private static final String KEY_ACCOUNT_NUMBER  = "account_number";
+    private static final String KEY_ACCOUNT_NUMBER_FROM_BANK = "account_number_from_bank";
     private static final String KEY_AMOUNT_NEDDED  = "amount_needed";
     private static final String KEY_NAME  = "name";
     
@@ -286,7 +287,7 @@ public class PiggyApi implements PiggyApiInterface{
                     }
                     
                         
-                    Piggy pig = new Piggy(o.getString(KEY_NAME), o.getString(KEY_ACCOUNT_NUMBER), o.getLong(KEY_AMOUNT), null, "",0, phones, o.getLong(KEY_AMOUNT_NEDDED));
+                    Piggy pig = new Piggy(o.getString(KEY_NAME), o.getString(KEY_ACCOUNT_NUMBER), o.getLong(KEY_AMOUNT), null, "",0, phones, o.getString(KEY_ACCOUNT_NUMBER_FROM_BANK),o.getLong(KEY_AMOUNT_NEDDED));
                     to_ret.add(pig);
                 }
             } catch (JSONException e) {
@@ -347,8 +348,8 @@ public class PiggyApi implements PiggyApiInterface{
     }
 
     public boolean createPiggy(Piggy piggy, String telephoneOwner) {
-        String[] userKeys = { KEY_ACCOUNT_NUMBER, KEY_AMOUNT, KEY_AMOUNT_NEDDED, KEY_NAME, KEY_TELEPHONE};
-        String[] userValues = { piggy.getNumber(), Float.toString(piggy.getAmount()), Float.toString(piggy.getObjectiveAmount()),piggy.getName(), telephoneOwner};
+        String[] userKeys = { KEY_ACCOUNT_NUMBER, KEY_AMOUNT, KEY_AMOUNT_NEDDED, KEY_NAME, KEY_TELEPHONE, KEY_ACCOUNT_NUMBER_FROM_BANK};
+        String[] userValues = { piggy.getNumber(), Float.toString(piggy.getAmount()), Float.toString(piggy.getObjectiveAmount()),piggy.getName(), telephoneOwner, piggy.getAccount_number()};
         JSONObject userJson = null;
         try {
             userJson = createJsonFromParams(userKeys, userValues);
@@ -391,7 +392,7 @@ public class PiggyApi implements PiggyApiInterface{
                     }
                     
                         
-                    Piggy pig = new Piggy(o.getString(KEY_NAME), o.getString(KEY_ACCOUNT_NUMBER), o.getLong(KEY_AMOUNT), null, "",0, phones, o.getLong(KEY_AMOUNT_NEDDED));
+                    Piggy pig = new Piggy(o.getString(KEY_NAME), o.getString(KEY_ACCOUNT_NUMBER), o.getLong(KEY_AMOUNT), null, "",0, phones, o.getString(KEY_ACCOUNT_NUMBER_FROM_BANK) ,o.getLong(KEY_AMOUNT_NEDDED));
                     to_ret.add(pig);
                 }
             } catch (JSONException e) {
