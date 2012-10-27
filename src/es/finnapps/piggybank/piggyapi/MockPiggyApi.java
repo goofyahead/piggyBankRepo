@@ -17,9 +17,18 @@ public class MockPiggyApi implements PiggyApiInterface {
         shared.add("634783448");
         shared.add("617561189");
         Piggy mockPig = new Piggy("mockPiggy", "ABC2020020202-23423", (float) 300.22, new Date(), "GIFT!",
-                Piggy.PIGGY_TYPE_GIFT, shared, 500.0f);
+                Piggy.PIGGY_TYPE_GIFT, shared);
+        Piggy mockPig2 = new Piggy("mockPiggy 2", "ABC2020020202-23423", (float) 300.22, new Date(), "GIFT!",
+                Piggy.PIGGY_TYPE_GIFT, shared);
+        Piggy mockPig3 = new Piggy("mockPiggy 3", "ABC2020020202-23423", (float) 300.22, new Date(), "GIFT!",
+                Piggy.PIGGY_TYPE_GIFT, shared);
+        Piggy mockPig4 = new Piggy("mockPiggy 4", "ABC2020020202-23423", (float) 300.22, new Date(), "GIFT!",
+                Piggy.PIGGY_TYPE_GIFT, shared);
         List<Piggy> mockList = new LinkedList<Piggy>();
         mockList.add(mockPig);
+        mockList.add(mockPig2);
+        mockList.add(mockPig3);
+        mockList.add(mockPig4);
         return mockList;
     }
 
@@ -33,11 +42,6 @@ public class MockPiggyApi implements PiggyApiInterface {
 
     public String createPiggyForGift(Piggy piggy, float amount, Date expirationDate) {
         return "ACB2020202020101202-33333";
-    }
-
-    public boolean createPiggy(Piggy piggy, String telephoneOwner) {
-        
-        return true;
     }
 
 }

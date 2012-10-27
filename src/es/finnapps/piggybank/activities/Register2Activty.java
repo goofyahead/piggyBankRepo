@@ -2,6 +2,8 @@ package es.finnapps.piggybank.activities;
 
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -52,21 +54,33 @@ public class Register2Activty extends RoboActivity {
         okButton.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				UserInfo userInfo = new UserInfo(
-						getIntent().getStringExtra(RegisterActivty.EXTRA_USER), 
-						getIntent().getStringExtra(RegisterActivty.EXTRA_PASSWORD), 
-						firstNameEdit.getText().toString(),
-						lastNameEdit.getText().toString(),
-						streetEdit.getText().toString(),
-						streetNumberEdit.getText().toString(),
-						cityEdit.getText().toString(),
-						postalCodeEdit.getText().toString(),
-						countryEdit.getText().toString());
 				
-				mPreferences.setUserName(userInfo.getUserName());
-				mPreferences.setUserPhoneNumber(userInfo.getNumber());
 				
-				bankApi.registerClient(userInfo);
+				new AsyncTask<Void, Void, Void>(){
+
+					@Override
+					protected Void doInBackground(Void... params) {
+						UserInfo userInfo = new UserInfo(
+								getIntent().getStringExtra(RegisterActivty.EXTRA_USER), 
+								getIntent().getStringExtra(RegisterActivty.EXTRA_PASSWORD), 
+								firstNameEdit.getText().toString(),
+								lastNameEdit.getText().toString(),
+								streetEdit.getText().toString(),
+								streetNumberEdit.getText().toString(),
+								cityEdit.getText().toString(),
+								postalCodeEdit.getText().toString(),
+								countryEdit.getText().toString());
+						
+						mPreferences.setUserName(userInfo.getUserName());
+						mPreferences.setUserPhoneNumber(userInfo.getNumber());
+						bankApi.registerClient(userInfo);
+						mPreferences.setUserRegistered(true);
+						return null;
+					}
+					protected void onPostExecute(Void result) {
+						startActivity(new Intent(Register2Activty.this,BrowsePigsActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
+					};
+				}.execute();
 			}
 		});
     }

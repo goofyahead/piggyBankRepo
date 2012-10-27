@@ -23,6 +23,7 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.AbstractHttpEntity;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -38,15 +39,24 @@ import android.util.Log;
 
 public class BankApi implements BankApiInterface {
     private String TAG = BankApi.class.getName();
+
     private String API_URL = "http://finappsapi.bdigital.org/api/2012/";
     private String API_KEY = "c6ab8d3240";
     private String CREATE_CLIENT_URL = API_URL + API_KEY + "/access/client";
     private String GET_TOKEN_URL = API_URL + API_KEY + "/access/login";
+    private String CREATE_ACCOUNT_URL = API_URL + API_KEY + "/" + REPLACE_TOKEN + "/operations/account/@me";
+    private String GET_ACCOUNTS_URL = API_URL + API_KEY + "/" + REPLACE_TOKEN + "/operations/account/list";
+    private String GET_ACCOUNT_AMOUNT = API_URL + API_KEY + "/" + REPLACE_TOKEN + "/operations/account/"
+            + REPLACE_ACCOUNT_ID;
+    private String TRANSFER_MONEY_URL = API_URL + API_KEY + "/" + REPLACE_TOKEN + "/operations/account/tranfer";
+
     @Inject
     private PiggyBankPreferences prefs;
 
-    protected static final String JSON_TYPE = "application/json";
-    protected static final String XML_TYPE = "text/xml";
+    private static final String REPLACE_TOKEN = "{token}";
+    private static final String REPLACE_ACCOUNT_ID = "{id_account}";
+    private static final String JSON_TYPE = "application/json";
+    private static final String XML_TYPE = "text/xml";
 
     private static final String KEY_USERNAME = "username";
     private static final String KEY_PASSWORD = "password";
@@ -62,6 +72,21 @@ public class BankApi implements BankApiInterface {
     private static final String KEY_AUTHORIZATION = "Authorization";
     private static final String KEY_BASIC = "Basic";
     private static final String KEY_TOKEN = "token";
+
+    private static final String OFFICE_KEY = "office";
+    private static final String CURRENCY_KEY = "currency";
+    private static final String FIX_OFFICE = "508a8989e4b0a7694d240e9b";
+    private static final String FIX_CURRENCY = "EURO";
+    private static final String KEY_ACCOUNT_NUMBER = "id";
+    private static final String KEY_DATA = "data";
+    private static final String KEY_AMOUNT = "actualBalance";
+    private static final String KEY_CONCEPT = "concept";
+    private static final String KEY_PAYEE = "payee";
+    private static final String KEY_ORIGIN_ACOUNT = "originAccount";
+    private static final String KEY_DESTINATION_ACCOUNT = "destinationAccount";
+    private static final String KEY_TRANSFER_AMOUNT = "value";
+    private static final String KEY_ADITIONAL_DATAS = "additionalData";
+
     private String CONTENT = "Content-Type";
     private JSONObject responseJson;
 
@@ -73,7 +98,35 @@ public class BankApi implements BankApiInterface {
         try {
             JSONObject json = createJsonFromParams(names, values);
             StringEntity entity = new StringEntity(json.toString());
-            entity.setContentType(XML_TYPE);
+            entity.setContentType(JSON_TYPE);
+            return entity;
+        } catch (UnsupportedEncodingException e) {
+            Log.d(TAG, "error creating entity from json Encodign", e);
+        } catch (JSONException e) {
+            Log.d(TAG, "error creating entity from json json", e);
+        }
+        return null;
+    }
+
+    protected StringEntity createJSONRequestForTransfer (String[] names, Object[] values) {
+        try {
+            JSONObject json = createJsonFromParams(names, values);
+            StringEntity entity = new StringEntity(json.toString());
+            entity.setContentType(JSON_TYPE);
+            return entity;
+        } catch (UnsupportedEncodingException e) {
+            Log.d(TAG, "error creating entity from json Encodign", e);
+        } catch (JSONException e) {
+            Log.d(TAG, "error creating entity from json json", e);
+        }
+        return null;
+    }
+
+    protected StringEntity createNewAccountEntity(String[] names, Object[] values) {
+        try {
+            JSONObject json = createJsonFromParams(names, values);
+            StringEntity entity = new StringEntity(json.toString());
+            entity.setContentType(JSON_TYPE);
             return entity;
         } catch (UnsupportedEncodingException e) {
             Log.d(TAG, "error creating entity from json Encodign", e);
@@ -241,9 +294,29 @@ public class BankApi implements BankApiInterface {
         }
     }
 
-    public boolean createAccount(String token) {
-        // TODO Auto-generated method stub
-        return false;
+    public String createAccount(String token) {
+        String createAccountUrl = CREATE_ACCOUNT_URL.replace(REPLACE_TOKEN, token);
+        String[] names = { OFFICE_KEY, CURRENCY_KEY };
+        String[] values = { FIX_OFFICE, FIX_CURRENCY };
+        HttpResponse response = callApi(createAccountUrl, null, HttpRequestType.post,
+                createNewAccountEntity(names, values), false);
+
+        JSONObject responseJson = null;
+        try {
+            responseJson = getResponseInfo(response);
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            JSONObject data = responseJson.getJSONObject(KEY_DATA);
+            String accountNumber = data.getString(KEY_ACCOUNT_NUMBER);
+            return accountNumber;
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public List<Operation> getOperations(String account) {
@@ -251,13 +324,51 @@ public class BankApi implements BankApiInterface {
         return null;
     }
 
-    public float getAccountAmount(String account) {
-        // TODO Auto-generated method stub
+    public long getAccountAmount(String account, String token) {
+        String getAccountAmount = GET_ACCOUNT_AMOUNT.replace(REPLACE_ACCOUNT_ID, account);
+        String getAccountAmountWithToken = getAccountAmount.replace(REPLACE_TOKEN, token);
+        HttpResponse response = callApi(getAccountAmountWithToken, null, HttpRequestType.get, null, true);
+
+        JSONObject responseJson = null;
+        try {
+            responseJson = getResponseInfo(response);
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            JSONObject data = responseJson.getJSONObject(KEY_DATA);
+            long accountNumber = data.getLong(KEY_AMOUNT);
+            return accountNumber;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         return 0;
     }
 
     public List<Piggy> getAccounts(String token) {
-        // TODO Auto-generated method stub
+        String getAccounts = GET_ACCOUNTS_URL.replace(REPLACE_TOKEN, token);
+        HttpResponse response = callApi(getAccounts, null, HttpRequestType.get, null, false);
+
+        JSONObject responseJson = null;
+        try {
+            responseJson = getResponseInfo(response);
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            JSONArray data = responseJson.getJSONArray(KEY_DATA);
+            for (int x = 0; x < data.length(); x++) {
+                String currentAccountId = data.getString(x);
+                long currentAmount = getAccountAmount(currentAccountId, token);
+                Piggy newPiggy = new Piggy("asdf", currentAccountId, currentAmount, null, null, Piggy.PIGGY_TYPE_SHARED, null);
+                Log.d(TAG, "current account: " + currentAccountId);
+                Log.d(TAG, "current amount: " + newPiggy.getAmount());
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
@@ -266,8 +377,19 @@ public class BankApi implements BankApiInterface {
         return null;
     }
 
-    public boolean transferFunds(String tokenFrom, String tokenTo) {
-        // TODO Auto-generated method stub
+    public boolean transferFunds(String fromAccount, String toAccount, String token, String concept, String userNumber, float amount) {
+        String[] accountNames = { KEY_CONCEPT, KEY_PAYEE };
+        String[] accountValues = { concept, userNumber};
+        JSONObject adicionalData = null;
+        try {
+            adicionalData = createJsonFromParams(accountNames, accountValues);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String[] names = { KEY_ORIGIN_ACOUNT, KEY_DESTINATION_ACCOUNT, KEY_TRANSFER_AMOUNT, KEY_ADITIONAL_DATAS };
+        Object[] values = { fromAccount, toAccount, amount, adicionalData };
+        StringEntity entity = createJSONRequestForRegister(names, values);
+        callApi(TRANSFER_MONEY_URL, null, HttpRequestType.post, entity, false);
         return false;
     }
 
@@ -290,9 +412,9 @@ public class BankApi implements BankApiInterface {
             String token = responseJson.getString(KEY_TOKEN);
             return token;
         } catch (JSONException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return null;
     }
+
 }
