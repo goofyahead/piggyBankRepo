@@ -1,14 +1,123 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android1="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@drawable/basic_background" >
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-40dp"
+        android:src="@drawable/base_titular_galeria" />
 
     <TextView
+        android:id="@+id/piggy_name_textview"
+        style="@style/TextFieldTitleStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_marginTop="10dp"
+        android:paddingTop="0dp"
         android:text="@string/hello_world"
-        tools:context=".CreatePiggyActivity" />
+        tools:context=".BrowsePigsActivicity" />
+
+    <RelativeLayout
+        android1:id="@+id/relativeLayout1"
+        android1:layout_width="wrap_content"
+        android1:layout_height="fill_parent"
+        android1:layout_below="@id/piggy_name_textview"
+        android1:layout_marginTop="-30dp"
+        android1:padding="15dp" >
+
+        <ImageView
+            android1:id="@+id/imageView2"
+            android1:layout_width="wrap_content"
+            android1:layout_height="wrap_content"
+            android1:src="@drawable/piggy_compartido" />
+
+        <TextView
+            android1:id="@+id/piggy_name_edit"
+            android1:layout_width="wrap_content"
+            android1:layout_height="wrap_content"
+            android1:layout_marginTop="50dp"
+            android1:layout_toRightOf="@+id/imageView2"
+            android1:text="@string/create_a_shared_piggy_to"
+            android1:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android1:id="@+id/TextView01"
+            style="@style/TextFieldTitleStyle"
+            android1:layout_width="wrap_content"
+            android1:layout_height="wrap_content"
+            android1:layout_alignLeft="@+id/imageView2"
+            android1:layout_below="@+id/imageView2"
+            android1:layout_marginTop="-20dp"
+            android1:text="@string/name_your_piggy"
+            android1:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <EditText
+            android1:id="@+id/piggy_name_edit"
+            style="@style/TextFieldStyle"
+            android1:layout_width="fill_parent"
+            android1:layout_height="wrap_content"
+            android1:layout_below="@+id/TextView01"
+            android1:ems="10" >
+
+            <requestFocus />
+        </EditText>
+
+        <TextView
+            android1:id="@+id/TextView02"
+            style="@style/TextFieldTitleStyle"
+            android1:layout_width="wrap_content"
+            android1:layout_height="wrap_content"
+            android1:layout_below="@+id/piggy_name_edit"
+            android1:text="@string/goal"
+            android1:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <EditText
+            android1:id="@+id/goal_edit"
+            style="@style/TextFieldStyle"
+            android1:layout_width="fill_parent"
+            android1:layout_height="wrap_content"
+            android1:layout_alignBaseline="@+id/TextView02"
+            android1:layout_marginLeft="15dp"
+            android1:layout_toRightOf="@+id/TextView02"
+            android1:ems="10" />
+
+        <ListView
+            android1:id="@+id/membersListView"
+            android1:layout_width="match_parent"
+            android1:layout_height="fill_parent"
+            android1:layout_above="@+id/add_button"
+            android1:layout_below="@+id/goal_edit"
+            android1:layout_marginBottom="15dp"
+            android1:layout_marginTop="280dp"
+            android1:layout_weight="1"
+            android1:background="@drawable/background_member_list" >
+
+        </ListView>
+
+        <Button
+            android1:id="@+id/add_button"
+            style="@style/ButtonStyle"
+            android1:layout_width="wrap_content"
+            android1:layout_height="wrap_content"
+            android1:layout_alignParentBottom="true"
+            android1:text="@string/add" />
+
+        <Button
+            android1:id="@+id/ok_button"
+            style="@style/ButtonStyle"
+            android1:layout_width="wrap_content"
+            android1:layout_height="wrap_content"
+            android1:layout_alignParentBottom="true"
+            android1:layout_marginLeft="15dp"
+            android1:layout_toRightOf="@+id/add_button"
+            android1:text="@string/ok" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

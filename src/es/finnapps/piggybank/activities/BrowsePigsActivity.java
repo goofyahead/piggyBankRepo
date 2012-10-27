@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -72,13 +73,21 @@ public class BrowsePigsActivity extends RoboActivity implements OnItemSelectedLi
 
         // Empty piggy, for creating new piggy
         mEmptyPiggyView = new ImageView(BrowsePigsActivity.this);
-        mEmptyPiggyView.setImageResource(R.drawable.cerdo_galeria);
+        mEmptyPiggyView.setImageResource(R.drawable.nuevo_piggy);
         mEmptyPiggyView.setOnClickListener(BrowsePigsActivity.this);
 
+      
+    }
+    
+    @Override
+    protected void onRestart() {
         new AsyncTask<Void, Void, Void>() {
 
             @Override
             protected Void doInBackground(Void... params) {
+                mPiggies.clear();
+                mPiggyViews.clear();
+                
                 mPiggies = new ArrayList<Piggy>();
                 mPiggies.addAll(mApi.getSharedPiggys(mPreferences.getUserPhone()));
                 mPiggyViews = new ArrayList<View>();
@@ -109,15 +118,15 @@ public class BrowsePigsActivity extends RoboActivity implements OnItemSelectedLi
 
     class PiggySpinner extends BaseAdapter {
         public int getCount() {
-            return mPiggies.size();
+            return mPiggyViews.size();
         }
 
         public Object getItem(int position) {
-            return mPiggies.get(position);
+            return mPiggyViews.get(position);
         }
 
         public long getItemId(int position) {
-            return mPiggies.get(position).getId();
+            return mPiggyViews.get(position).getId();
         }
 
         public View getView(int position, View convertView, ViewGroup parent) {
@@ -128,7 +137,8 @@ public class BrowsePigsActivity extends RoboActivity implements OnItemSelectedLi
 
     public void onItemSelected(AdapterView<?> adapter, View view, int position, long id) {
         if (view == mEmptyPiggyView){
-            
+            mPiggyNameTextView.setText(getString(R.string.new_piggy));
+           return; 
         }
         mPiggyNameTextView.setText(mPiggies.get(position).getName());
 
@@ -144,7 +154,22 @@ public class BrowsePigsActivity extends RoboActivity implements OnItemSelectedLi
         v.startAnimation(scaleAnim);
 
         if (v == mEmptyPiggyView) {
-            startActivity(new Intent(BrowsePigsActivity.this, CreatePiggyActivity.class));
+            scaleAnim.setAnimationListener(new AnimationListener() {
+                
+                public void onAnimationStart(Animation animation) {
+                    // TODO Auto-generated method stub
+                    
+                }
+                
+                public void onAnimationRepeat(Animation animation) {
+                    // TODO Auto-generated method stub
+                    
+                }
+                
+                public void onAnimationEnd(Animation animation) {
+                    startActivity(new Intent(BrowsePigsActivity.this, CreatePiggyActivity.class));
+                }
+            });
         }
         new AsyncTask<Void, Void, Void>() {
 
