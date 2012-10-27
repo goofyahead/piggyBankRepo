@@ -35,4 +35,9 @@ public class MockPiggyApi implements PiggyApiInterface {
         return "ACB2020202020101202-33333";
     }
 
+    public boolean createPiggy(Piggy piggy, String telephoneOwner) {
+        
+        return true;
+    }
+
 }

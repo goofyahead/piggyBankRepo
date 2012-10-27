@@ -53,6 +53,8 @@ public interface PiggyApiInterface {
      * @return
      */
     public boolean sharePiggyWith(Piggy piggy);
+    
+    public boolean createPiggy(Piggy piggy, String telephoneOwner);
 
     /**
      * Request to create a new piggy gift, an account will be created and
