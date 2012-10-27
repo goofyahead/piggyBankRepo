@@ -11,16 +11,18 @@ import android.content.Intent;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
-import android.nfc.NfcEvent;
 import android.nfc.NfcAdapter.CreateNdefMessageCallback;
+import android.nfc.NfcEvent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -28,12 +30,14 @@ import android.widget.BaseAdapter;
 import android.widget.Gallery;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.inject.Inject;
 
 import es.finnapps.piggybank.R;
+import es.finnapps.piggybank.bankapi.BankApiInterface;
 import es.finnapps.piggybank.model.Piggy;
 import es.finnapps.piggybank.piggyapi.PiggyApiInterface;
 import es.finnapps.piggybank.sharedprefs.PiggyBankPreferences;
@@ -57,16 +61,20 @@ public class BrowsePigsActivity extends RoboActivity implements CreateNdefMessag
     private ImageButton mCoin100;
     @InjectView(R.id.coin200)
     private ImageButton mCoin200;
+    @InjectView(R.id.progressbar)
+    private ProgressBar mProgressBar;
     private NfcAdapter mNfcAdapter;
+    private Piggy currentPiggy = null;
 
     @Inject
-    private PiggyApiInterface mApi;
+    private PiggyApiInterface mPiggyApi;
+    @Inject
+    private BankApiInterface mBankApi;
     @Inject
     private PiggyBankPreferences mPreferences;
     private ImageView mEmptyPiggyView;
     private List<Piggy> mPiggies;
     private List<View> mPiggyViews;
-    private Piggy currentPiggy = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -91,15 +99,29 @@ public class BrowsePigsActivity extends RoboActivity implements CreateNdefMessag
 
         // Empty piggy, for creating new piggy
         mEmptyPiggyView = new ImageView(BrowsePigsActivity.this);
-        mEmptyPiggyView.setImageResource(R.drawable.cerdo_galeria);
+        mEmptyPiggyView.setImageResource(R.drawable.nuevo_piggy);
         mEmptyPiggyView.setOnClickListener(BrowsePigsActivity.this);
 
+        initActivity();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        initActivity();
+    }
+
+    private void initActivity() {
         new AsyncTask<Void, Void, Void>() {
+            protected void onPreExecute() {
+                mProgressBar.setVisibility(View.VISIBLE);
+            };
 
             @Override
             protected Void doInBackground(Void... params) {
+
                 mPiggies = new ArrayList<Piggy>();
-                mPiggies.addAll(mApi.getSharedPiggys(mPreferences.getUserPhone()));
+                mPiggies.addAll(mPiggyApi.getSharedPiggys(mPreferences.getUserPhone()));
                 mPiggyViews = new ArrayList<View>();
 
                 for (int i = 0; i < mPiggies.size(); i++) {
@@ -115,9 +137,11 @@ public class BrowsePigsActivity extends RoboActivity implements CreateNdefMessag
 
             protected void onPostExecute(Void result) {
                 mGallery.setAdapter(new PiggySpinner());
+                mProgressBar.setVisibility(View.INVISIBLE);
             };
 
         }.execute();
+
         mNfcAdapter.setNdefPushMessageCallback(this, this);
     }
 
@@ -129,15 +153,15 @@ public class BrowsePigsActivity extends RoboActivity implements CreateNdefMessag
 
     class PiggySpinner extends BaseAdapter {
         public int getCount() {
-            return mPiggies.size();
+            return mPiggyViews.size();
         }
 
         public Object getItem(int position) {
-            return mPiggies.get(position);
+            return mPiggyViews.get(position);
         }
 
         public long getItemId(int position) {
-            return mPiggies.get(position).getId();
+            return mPiggyViews.get(position).getId();
         }
 
         public View getView(int position, View convertView, ViewGroup parent) {
@@ -148,10 +172,15 @@ public class BrowsePigsActivity extends RoboActivity implements CreateNdefMessag
 
     public void onItemSelected(AdapterView<?> adapter, View view, int position, long id) {
         if (view == mEmptyPiggyView) {
-
+            mPiggyNameTextView.setText(getString(R.string.new_piggy));
+            return;
         }
-        mPiggyNameTextView.setText(mPiggies.get(position).getName());
+        if (position >= mPiggies.size()) {
+            Log.e("Browse", "position >= size");
+            return;
+        }
         currentPiggy = mPiggies.get(position);
+        mPiggyNameTextView.setText(mPiggies.get(position).getName());
     }
 
     public void onNothingSelected(AdapterView<?> arg0) {
@@ -164,27 +193,53 @@ public class BrowsePigsActivity extends RoboActivity implements CreateNdefMessag
         v.startAnimation(scaleAnim);
 
         if (v == mEmptyPiggyView) {
-            startActivity(new Intent(BrowsePigsActivity.this, CreatePiggyActivity.class));
+            scaleAnim.setAnimationListener(new AnimationListener() {
+
+                public void onAnimationStart(Animation animation) {
+                    // TODO Auto-generated method stub
+
+                }
+
+                public void onAnimationRepeat(Animation animation) {
+                    // TODO Auto-generated method stub
+
+                }
+
+                public void onAnimationEnd(Animation animation) {
+                    startActivity(new Intent(BrowsePigsActivity.this, CreatePiggyActivity.class));
+                }
+            });
         }
+
+    }
+
+    private void deposit(float amount) {
+        final float _amount = amount;
         new AsyncTask<Void, Void, Void>() {
+
+            protected void onPreExecute() {
+                mProgressBar.setVisibility(View.VISIBLE);
+            };
 
             @Override
             protected Void doInBackground(Void... params) {
+                Piggy piggy = mPiggies.get(mGallery.getSelectedItemPosition());
+                mBankApi.transferFunds(mPreferences.getBaseAccount(), piggy.getNumber(), mPreferences.getToken(),
+                        piggy.getName(), mPreferences.getUserPhone(), _amount);
                 return null;
             }
 
             protected void onPostExecute(Void result) {
-
+                mProgressBar.setVisibility(View.INVISIBLE);
             };
 
         }.execute();
-
     }
 
     public NdefMessage createNdefMessage(NfcEvent event) {
 
-        NdefMessage msg = new NdefMessage(
-                new NdefRecord[] { createTextRecord(currentPiggy.getNumber(), Locale.getDefault(), true) });
+        NdefMessage msg = new NdefMessage(new NdefRecord[] { createTextRecord(currentPiggy.getNumber(),
+                Locale.getDefault(), true) });
         return msg;
     }
 
@@ -216,10 +271,10 @@ public class BrowsePigsActivity extends RoboActivity implements CreateNdefMessag
         super.onResume();
         // Check to see that the Activity started due to an Android Beam
         if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(getIntent().getAction())) {
-            if (processIntent(getIntent())){
-                //create nuevo cerdo
-            }else{
-                //fail
+            if (processIntent(getIntent())) {
+                // create nuevo cerdo
+            } else {
+                // fail
             }
         }
     }
@@ -234,13 +289,13 @@ public class BrowsePigsActivity extends RoboActivity implements CreateNdefMessag
      * Parses the NDEF Message from the intent and prints to the TextView
      */
     public boolean processIntent(Intent intent) {
-       
-        Parcelable[] rawMsgs = intent.getParcelableArrayExtra(
-                NfcAdapter.EXTRA_NDEF_MESSAGES);
+
+        Parcelable[] rawMsgs = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
         // only one message sent during the beam
         NdefMessage msg = (NdefMessage) rawMsgs[0];
-        Toast.makeText(this, "Cerdito compartido contigo " + new String(msg.getRecords()[0].getPayload()), Toast.LENGTH_LONG).show();
-        
+        Toast.makeText(this, "Cerdito compartido contigo " + new String(msg.getRecords()[0].getPayload()),
+                Toast.LENGTH_LONG).show();
+
         // record 0 contains the MIME type, record 1 is the AAR, if present
         return true;
     }

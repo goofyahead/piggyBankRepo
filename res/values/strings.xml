@@ -25,5 +25,11 @@
     <string name="register">Register</string>
     <string name="put_money_in_piggybank">Deposit</string>
     <string name="amount">Amount</string>
+    <string name="new_piggy">(New piggy)</string>
+    <string name="create_a_shared_piggy_to">Create a shared Piggy to achieve a goal with whoever you like.  Keep in mind that you are the one that can break open the Piggy!</string>
+    <string name="name_your_piggy">Name your Piggy</string>
+    <string name="goal">Goal</string>
+    <string name="add">Add</string>
+    <string name="ok">Ok</string>
 
 </resources>
