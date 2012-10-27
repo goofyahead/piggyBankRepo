@@ -7,6 +7,7 @@ import java.util.Locale;
 
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
+import android.app.Dialog;
 import android.content.Intent;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
@@ -210,6 +211,10 @@ public class BrowsePigsActivity extends RoboActivity implements CreateNdefMessag
                 }
             });
         }
+        if (v == mCoin200)
+        {
+            shareAndRequest("account1234", -1);
+        }
 
     }
 
@@ -342,7 +347,7 @@ public class BrowsePigsActivity extends RoboActivity implements CreateNdefMessag
             return null;
         };
         protected void onPostExecute(Void result) {
-               mProgressBar.setVisibility(View.VISIBLE);
+               mProgressBar.setVisibility(View.INVISIBLE);
             
                if (_amount <= 0)
                {
@@ -351,8 +356,9 @@ public class BrowsePigsActivity extends RoboActivity implements CreateNdefMessag
                            Toast.LENGTH_LONG).show();
                }
                else {
+                   String formattedString = String.format(BrowsePigsActivity.this.getString(R.string.accept_transfer), _amount); 
                    MyDialogAlert newFragment = MyDialogAlert.newInstance(R.string.attention_nfc,
-                           R.string.accept_transfer,new Runnable() {
+                          formattedString ,new Runnable() {
                             
                             public void run() {
                                 // Positive action: transaction
@@ -364,4 +370,5 @@ public class BrowsePigsActivity extends RoboActivity implements CreateNdefMessag
         };
        }.execute();
     }
-}
+
+} 

@@ -7,13 +7,13 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import es.finnapps.piggybank.R;
 
-public class MyDialogAlert extends DialogFragment {
+public class MyTextFieldAlert extends DialogFragment {
 
     Runnable positiveAction = null;
     Runnable negativeAction = null;
 
-    public static MyDialogAlert newInstance(int title, String text, Runnable positiveAction, Runnable negativeAction) {
-        MyDialogAlert frag = new MyDialogAlert();
+    public static MyTextFieldAlert newInstance(int title, String text, Runnable positiveAction, Runnable negativeAction) {
+        MyTextFieldAlert frag = new MyTextFieldAlert();
         frag.positiveAction = positiveAction;
         frag.negativeAction = negativeAction;
         Bundle args = new Bundle();
