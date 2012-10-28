@@ -347,6 +347,42 @@ public class PiggyApi implements PiggyApiInterface{
         
     }
 
+    
+
+    public float getAmountAccount(Piggy piggy) {
+            
+            String[] userKeys = { KEY_ACCOUNT_NUMBER};
+            String[] userValues = { piggy.getNumber()};
+            JSONObject userJson = null;
+            try {
+                userJson = createJsonFromParams(userKeys, userValues);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            StringEntity entity = createJSONRequestForRegister(userKeys, userValues);
+            HttpResponse response = callApi(GET_ACCOUNT_AMOUNT, getBasicHeaders(), HttpRequestType.post, entity, false);
+    
+            if (response.getStatusLine().getStatusCode() == 200) {
+                JSONObject info = getResponseInfo(response);
+                try {
+                    return Float.valueOf(info.getString("amount")).floatValue();
+                    
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            } else {
+                return -1f;
+            }
+            return -1f;
+        
+        
+    }
+
+    
+    
+    
+    
     public boolean createPiggy(Piggy piggy, String telephoneOwner) {
         String[] userKeys = { KEY_ACCOUNT_NUMBER, KEY_AMOUNT, KEY_AMOUNT_NEDDED, KEY_NAME, KEY_TELEPHONE, KEY_ACCOUNT_NUMBER_FROM_BANK};
         String[] userValues = { piggy.getNumber(), Float.toString(piggy.getAmount()), Float.toString(piggy.getObjectiveAmount()),piggy.getName(), telephoneOwner, piggy.getAccount_number()};
