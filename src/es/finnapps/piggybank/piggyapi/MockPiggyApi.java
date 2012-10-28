@@ -59,4 +59,9 @@ public class MockPiggyApi implements PiggyApiInterface {
         return null;
     }
 
+    public float getAmount(String accountId) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
 }

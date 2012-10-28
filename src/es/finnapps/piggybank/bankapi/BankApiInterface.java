@@ -2,6 +2,7 @@ package es.finnapps.piggybank.bankapi;
 
 import java.util.List;
 
+import es.finnapps.piggybank.model.Account;
 import es.finnapps.piggybank.model.Operation;
 import es.finnapps.piggybank.model.Piggy;
 import es.finnapps.piggybank.model.UserInfo;
@@ -13,7 +14,7 @@ import es.finnapps.piggybank.model.UserInfo;
  */
 public interface BankApiInterface {
 
-    public String createAccount(String token);
+    public Account createAccount(String token);
 
     public List<Operation> getOperations(String account);
 
@@ -25,9 +26,13 @@ public interface BankApiInterface {
 
     public boolean transferFunds(String fromAccount, String toAccount, String token, String concept, String userNumber, float amount);
 
+    public boolean transferFundsForShared (String fromAccount, String toAccount, String token, String concept, String userNumber, float amount);
+
     public boolean depositFunds(String token, String account);
 
     public boolean registerClient(UserInfo userInfo);
 
     public String getToken ();
+   
+    public String getAccountNumber(String accountId, String token);
 }

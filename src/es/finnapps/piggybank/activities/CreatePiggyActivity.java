@@ -31,6 +31,7 @@ import com.google.inject.Inject;
 import es.finnapps.piggybank.R;
 import es.finnapps.piggybank.bankapi.BankApiInterface;
 import es.finnapps.piggybank.contacts.ContactsProvider;
+import es.finnapps.piggybank.model.Account;
 import es.finnapps.piggybank.model.Piggy;
 import es.finnapps.piggybank.piggyapi.PiggyApiInterface;
 import es.finnapps.piggybank.sharedprefs.PiggyBankPreferences;
@@ -143,7 +144,7 @@ public class CreatePiggyActivity extends RoboActivity implements OnClickListener
                 mMembers.add(s);
                 TextView textView = new TextView(CreatePiggyActivity.this);
                 textView.setText(s);
-                //textView.setText(mContactsProvider.getContactNameWihtNumber(s));
+                // textView.setText(mContactsProvider.getContactNameWihtNumber(s));
                 mMemberViews.add(textView);
                 Runnable run = new Runnable() {
                     public void run() {
@@ -174,10 +175,11 @@ public class CreatePiggyActivity extends RoboActivity implements OnClickListener
 
                 @Override
                 protected Void doInBackground(Void... params) {
-                    String accountNumber = mBankApi.createAccount(mPreferences.getToken());
+                    Account newAccount = mBankApi.createAccount(mPreferences.getToken());
+
                     float amount = Float.parseFloat(mGoalEdit.getText().toString());
-                    Piggy piggy = new Piggy(mNameEditText.getText().toString(), accountNumber, amount, null, null, 0,
-                            mMembers, 0);
+                    Piggy piggy = new Piggy(mNameEditText.getText().toString(), newAccount.getAccountId(), amount,
+                            null, null, 0, mMembers, newAccount.getAccountBank(), 0);
                     mPiggyApi.createPiggy(piggy, mPreferences.getUserPhone());
                     mPiggyApi.sharePiggyWith(piggy);
                     return null;

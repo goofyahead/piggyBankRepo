@@ -90,6 +90,36 @@ public class PiggyApi implements PiggyApiInterface{
         return null;
     }
 
+    public float getAmount(String accountId) {
+        
+        String[] userKeys = { KEY_ACCOUNT_NUMBER};
+        String[] userValues = { accountId };
+        JSONObject userJson = null;
+        try {
+            userJson = createJsonFromParams(userKeys, userValues);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        StringEntity entity = createJSONRequestForRegister(userKeys, userValues);
+        HttpResponse response = callApi(GET_ACCOUNT_AMOUNT, getBasicHeaders(), HttpRequestType.post, entity, false);
+
+        if (response.getStatusLine().getStatusCode() == 200) {
+            JSONObject info = getResponseInfo(response);
+            try {
+                return Float.parseFloat(info.getString("amount"));
+                
+            } catch (JSONException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        } else {
+            return 0;
+        }
+        return 0;
+    
+    
+}
+
     private JSONObject createJsonFromParams(String[] names, Object[] values) throws JSONException {
         JSONObject json = new JSONObject();
         for (int i = 0; i < values.length; i++) {
