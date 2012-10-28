@@ -17,13 +17,13 @@ public class MockPiggyApi implements PiggyApiInterface {
         shared.add("634783448");
         shared.add("617561189");
         Piggy mockPig = new Piggy("mockPiggy", "ABC2020020202-23423", (float) 300.22, new Date(), "GIFT!",
-                Piggy.PIGGY_TYPE_GIFT, shared, 1000);
+                Piggy.PIGGY_TYPE_GIFT, shared, "aaa",1000);
         Piggy mockPig2 = new Piggy("mockPiggy 2", "ABC2020020202-23423", (float) 300.22, new Date(), "GIFT!",
-                Piggy.PIGGY_TYPE_GIFT, shared, 1000);
+                Piggy.PIGGY_TYPE_GIFT, shared,"bbb", 1000);
         Piggy mockPig3 = new Piggy("mockPiggy 3", "ABC2020020202-23423", (float) 300.22, new Date(), "GIFT!",
-                Piggy.PIGGY_TYPE_GIFT, shared, 1000);
+                Piggy.PIGGY_TYPE_GIFT, shared,"cc", 1000);
         Piggy mockPig4 = new Piggy("mockPiggy 4", "ABC2020020202-23423", (float) 300.22, new Date(), "GIFT!",
-                Piggy.PIGGY_TYPE_GIFT, shared, 1000);
+                Piggy.PIGGY_TYPE_GIFT, shared,"dd", 1000);
         List<Piggy> mockList = new LinkedList<Piggy>();
         mockList.add(mockPig);
         mockList.add(mockPig2);
@@ -57,6 +57,11 @@ public class MockPiggyApi implements PiggyApiInterface {
     public List<Piggy> getMyPiggys(String phoneNumber) {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    public float getAmount(String accountId) {
+        // TODO Auto-generated method stub
+        return 0;
     }
 
 }

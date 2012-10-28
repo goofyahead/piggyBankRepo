@@ -22,8 +22,9 @@ public class Piggy {
     private List<String> shared;
     private int type;
     private int id;
+    private String account_number;
 
-    public Piggy(String name, String number, float amount, Date expiration, String objetiveName, int type, List<String> shared, float objectiveAmount) {
+    public Piggy(String name, String number, float amount, Date expiration, String objetiveName, int type, List<String> shared, String account_number, float objectiveAmount) {
         super();
         this.name = name;
         this.number = number;
@@ -33,6 +34,7 @@ public class Piggy {
         this.objectiveName = objetiveName;
         this.type = type;
         this.objectiveAmount = objectiveAmount;
+        this.account_number = account_number;
     }
 
 
@@ -115,6 +117,16 @@ public class Piggy {
 
     public void setAmountToShare(float amountToShare) {
         this.amountToShare = amountToShare;
+    }
+
+
+    public String getAccount_number() {
+        return account_number;
+    }
+
+
+    public void setAccount_number(String account_number) {
+        this.account_number = account_number;
     }
 
 

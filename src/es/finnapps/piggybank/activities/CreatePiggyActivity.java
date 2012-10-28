@@ -178,8 +178,8 @@ public class CreatePiggyActivity extends RoboActivity implements OnClickListener
                     Account newAccount = mBankApi.createAccount(mPreferences.getToken());
 
                     float amount = Float.parseFloat(mGoalEdit.getText().toString());
-                    Piggy piggy = new Piggy(mNameEditText.getText().toString(), newAccount.getAccountId(),
-                            newAccount.getAccountBank(), amount, null, null, 0, mMembers, 0);
+                    Piggy piggy = new Piggy(mNameEditText.getText().toString(), newAccount.getAccountId(), amount,
+                            null, null, 0, mMembers, newAccount.getAccountBank(), 0);
                     mPiggyApi.createPiggy(piggy, mPreferences.getUserPhone());
                     mPiggyApi.sharePiggyWith(piggy);
                     return null;

@@ -19,6 +19,8 @@ public interface PiggyApiInterface {
      */
     public boolean registerUser(String userName, String phoneNumber);
 
+    public float getAmount(String accountId);
+
     /**
      * Request for piggys that are shared with me, a list of piggys should be
      * returned, with current state.

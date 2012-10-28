@@ -404,10 +404,10 @@ public class BankApi implements BankApiInterface {
                 String currentAccountId = data.getString(x);
                 long currentAmount = getAccountAmount(currentAccountId, token);
 
-                Piggy newPiggy = new Piggy(null, currentAccountId, currentAmount, null, null, Piggy.PIGGY_TYPE_SHARED,
-                        null, 0);
-                Log.d(TAG, "current account: " + currentAccountId);
-                Log.d(TAG, "current amount: " + newPiggy.getAmount());
+//                Piggy newPiggy = new Piggy(null, currentAccountId, currentAmount, null, null, Piggy.PIGGY_TYPE_SHARED,
+//                        null, 0);
+//                Log.d(TAG, "current account: " + currentAccountId);
+//                Log.d(TAG, "current amount: " + newPiggy.getAmount());
             }
         } catch (JSONException e) {
             e.printStackTrace();

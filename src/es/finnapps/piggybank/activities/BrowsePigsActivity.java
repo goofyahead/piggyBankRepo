@@ -105,7 +105,7 @@ public class BrowsePigsActivity extends RoboActivity implements CreateNdefMessag
             public void onClick(View v) {
                 deposit(1);
                 new AsyncTask<Void, Void, Void>() {
-                    long amount = 0;
+                    float amount = 0;
 
                     @Override
                     protected Void doInBackground(Void... params) {
@@ -126,7 +126,7 @@ public class BrowsePigsActivity extends RoboActivity implements CreateNdefMessag
             public void onClick(View v) {
                 deposit(2);
                 new AsyncTask<Void, Void, Void>() {
-                    long amount = 0;
+                    float amount = 0;
 
                     @Override
                     protected Void doInBackground(Void... params) {
@@ -146,7 +146,7 @@ public class BrowsePigsActivity extends RoboActivity implements CreateNdefMessag
             public void onClick(View v) {
                 deposit(20);
                 new AsyncTask<Void, Void, Void>() {
-                    long amount = 0;
+                    float amount = 0;
 
                     @Override
                     protected Void doInBackground(Void... params) {
@@ -166,7 +166,7 @@ public class BrowsePigsActivity extends RoboActivity implements CreateNdefMessag
             public void onClick(View v) {
                 deposit(50);
                 new AsyncTask<Void, Void, Void>() {
-                    long amount = 0;
+                    float amount = 0;
 
                     @Override
                     protected Void doInBackground(Void... params) {
@@ -186,7 +186,7 @@ public class BrowsePigsActivity extends RoboActivity implements CreateNdefMessag
             public void onClick(View v) {
                 deposit(100);
                 new AsyncTask<Void, Void, Void>() {
-                    long amount = 0;
+                    float amount = 0;
 
                     @Override
                     protected Void doInBackground(Void... params) {
@@ -206,7 +206,7 @@ public class BrowsePigsActivity extends RoboActivity implements CreateNdefMessag
             public void onClick(View v) {
                 deposit(200);
                 new AsyncTask<Void, Void, Void>() {
-                    long amount = 0;
+                    float amount = 0;
 
                     @Override
                     protected Void doInBackground(Void... params) {
@@ -227,7 +227,7 @@ public class BrowsePigsActivity extends RoboActivity implements CreateNdefMessag
             public void onClick(View v) {
                 deposit(Long.parseLong(amountDeposit.getText().toString()));
                 new AsyncTask<Void, Void, Void>() {
-                    long amount = 0;
+                    float amount = 0;
 
                     @Override
                     protected Void doInBackground(Void... params) {
@@ -404,7 +404,7 @@ public class BrowsePigsActivity extends RoboActivity implements CreateNdefMessag
             protected Void doInBackground(Void... params) {
                 Piggy piggy = mPiggies.get(mGallery.getSelectedItemPosition());
 
-                mBankApi.transferFundsForShared(mPreferences.getBaseAccount(), piggy.getAccountNumber(),
+                mBankApi.transferFundsForShared(mPreferences.getBaseAccount(), piggy.getAccount_number(),
                         mPreferences.getToken(), piggy.getName(), mPreferences.getUserPhone(), _amount);
                 // si el cerdo es nuestro updateamos la cantidad
                 List <Piggy> piggies = mPiggyApi.getMyPiggys(mPreferences.getUserPhone());
@@ -423,8 +423,7 @@ public class BrowsePigsActivity extends RoboActivity implements CreateNdefMessag
 
     public NdefMessage createNdefMessage(NfcEvent event) {
         NdefMessage msg = new NdefMessage(new NdefRecord[] { createMimeRecord("application/com.doorthing.door",
-                (mBankApi.getAccountNumber(currentPiggy.getNumber(), mPreferences.getToken()) + ":" + currentPiggy
-                        .getAmountToShare()).getBytes())
+                (currentPiggy.getNumber() + ":" + amountDeposit.getText().toString()).getBytes())
         // sb.toString().getBytes())
                 });
         return msg;
@@ -518,7 +517,7 @@ public class BrowsePigsActivity extends RoboActivity implements CreateNdefMessag
                 // share piggy
                 List<String> shared = new ArrayList<String>();
                 shared.add(mPreferences.getUserPhone());
-                Piggy piggy = new Piggy(null, _account, 0, null, null, 0, shared, _amount);
+                Piggy piggy = new Piggy(null, _account, 0, null, null, 0, shared, "unknown" ,_amount);
                 mPiggyApi.sharePiggyWith(piggy);
                 return null;
             };
