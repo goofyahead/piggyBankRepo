@@ -303,8 +303,8 @@ public class BankApi implements BankApiInterface {
             String token = getToken();
             prefs.setToken(token);
             Account firstAccount = createAccount(token);
-            prefs.setBaseAccount(firstAccount.getAccountId());
-            depositFunds(token, firstAccount.getAccountId());
+            prefs.setBaseAccount(firstAccount.getAccountBank());
+            depositFunds(token, firstAccount.getAccountBank());
             return true;
         } else {
             return false;
@@ -433,38 +433,6 @@ public class BankApi implements BankApiInterface {
         }
         String[] names = { KEY_ORIGIN_ACOUNT, KEY_DESTINATION_ACCOUNT, KEY_TRANSFER_AMOUNT, KEY_ADITIONAL_DATAS };
         Object[] values = { fromAccountNumber, toAccountNumber, amount, adicionalData };
-        StringEntity entity = createJSONRequestForRegister(names, values);
-        String transferUrl = TRANSFER_MONEY_URL.replace(REPLACE_TOKEN, token);
-        HttpResponse response = callApi(transferUrl, null, HttpRequestType.post, entity, false);
-        if (response.getStatusLine().getStatusCode() == 200) {
-            JSONObject responseJson = null;
-            try {
-                responseJson = getResponseInfo(response);
-                Log.d(TAG, responseJson.toString());
-            } catch (IllegalStateException e) {
-                e.printStackTrace();
-            }
-            return true;
-        } else {
-            responseJson = getResponseInfo(response);
-            Log.d(TAG, responseJson.toString());
-            return false;
-        }
-    }
-
-    public boolean transferFundsForShared(String fromAccountId, String toAccountId, String token, String concept,
-            String userNumber, float amount) {
-
-        String[] accountNames = { KEY_CONCEPT, KEY_PAYEE };
-        String[] accountValues = { concept, userNumber };
-        JSONObject adicionalData = null;
-        try {
-            adicionalData = createJsonFromParams(accountNames, accountValues);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        String[] names = { KEY_ORIGIN_ACOUNT, KEY_DESTINATION_ACCOUNT, KEY_TRANSFER_AMOUNT, KEY_ADITIONAL_DATAS };
-        Object[] values = { getAccountNumber(fromAccountId, token), toAccountId, amount, adicionalData };
         StringEntity entity = createJSONRequestForRegister(names, values);
         String transferUrl = TRANSFER_MONEY_URL.replace(REPLACE_TOKEN, token);
         HttpResponse response = callApi(transferUrl, null, HttpRequestType.post, entity, false);
