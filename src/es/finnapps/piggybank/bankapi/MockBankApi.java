@@ -60,12 +60,6 @@ public class MockBankApi implements BankApiInterface {
         return false;
     }
 
-    public boolean transferFundsForShared(String fromAccount, String toAccount, String token, String concept,
-            String userNumber, float amount) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
     public String getAccountNumber(String accountId, String token) {
         // TODO Auto-generated method stub
         return null;
