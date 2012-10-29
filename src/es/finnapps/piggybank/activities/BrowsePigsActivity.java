@@ -362,18 +362,55 @@ public class BrowsePigsActivity extends RoboActivity implements CreateNdefMessag
         mPiggyNameTextView.setText(mPiggies.get(position).getName());
 
         new AsyncTask<Void, Void, Void>() {
-            long amount = 0;
+            private  List<Piggy> myPiggies;
+            private boolean mine;
 
             @Override
             protected Void doInBackground(Void... params) {
-                amount = mBankApi.getAccountAmount(currentPiggy.getNumber(), mPreferences.getToken());
+                myPiggies = mPiggyApi.getMyPiggys(mPreferences.getUserPhone());
+                
+                boolean mine = false;
+                for (Piggy pig : myPiggies) {
+                    if (pig.getNumber().equals(currentPiggy.getNumber()))
+                        mine = true;
+                }
                 return null;
             }
 
+            @Override
             protected void onPostExecute(Void result) {
-                mPiggyNameTextView.setText(mPiggies.get(currentPosition).getName() + " " + amount + "€");
-            };
+                if (mine) {
+                    new AsyncTask<Void, Void, Void>() {
+                        float amount = 0;
 
+                        @Override
+                        protected Void doInBackground(Void... params) {
+                            amount = mBankApi.getAccountAmount(currentPiggy.getNumber(), mPreferences.getToken());
+                            return null;
+                        }
+
+                        protected void onPostExecute(Void result) {
+                            mPiggyNameTextView.setText(mPiggies.get(currentPosition).getName() + " " + amount + "€");
+                        };
+
+                    }.execute();
+                } else {
+                    new AsyncTask<Void, Void, Void>() {
+                        float amount = 0;
+
+                        @Override
+                        protected Void doInBackground(Void... params) {
+                            amount = mPiggyApi.getAmount(currentPiggy.getNumber());
+                            return null;
+                        }
+
+                        protected void onPostExecute(Void result) {
+                            mPiggyNameTextView.setText(mPiggies.get(currentPosition).getName() + " " + amount + "€");
+                        };
+                    }.execute();
+                }
+                super.onPostExecute(result);
+            }
         }.execute();
     }
 
@@ -404,12 +441,13 @@ public class BrowsePigsActivity extends RoboActivity implements CreateNdefMessag
             protected Void doInBackground(Void... params) {
                 Piggy piggy = mPiggies.get(mGallery.getSelectedItemPosition());
 
-                mBankApi.transferFundsForShared(mPreferences.getBaseAccount(), piggy.getAccount_number(),
+                mBankApi.transferFunds(mPreferences.getBaseAccount(), piggy.getAccount_number(),
                         mPreferences.getToken(), piggy.getName(), mPreferences.getUserPhone(), _amount);
                 // si el cerdo es nuestro updateamos la cantidad
-                List <Piggy> piggies = mPiggyApi.getMyPiggys(mPreferences.getUserPhone());
-                if (piggies.contains(piggy)){
-                    mPiggyApi.notifyMoneySavedOnPiggy(piggy, mBankApi.getAccountAmount(piggy.getNumber(), mPreferences.getToken()));
+                List<Piggy> piggies = mPiggyApi.getMyPiggys(mPreferences.getUserPhone());
+                if (piggies.contains(piggy)) {
+                    mPiggyApi.notifyMoneySavedOnPiggy(piggy,
+                            mBankApi.getAccountAmount(piggy.getNumber(), mPreferences.getToken()));
                 }
                 return null;
             }
@@ -517,7 +555,7 @@ public class BrowsePigsActivity extends RoboActivity implements CreateNdefMessag
                 // share piggy
                 List<String> shared = new ArrayList<String>();
                 shared.add(mPreferences.getUserPhone());
-                Piggy piggy = new Piggy(null, _account, 0, null, null, 0, shared, "unknown" ,_amount);
+                Piggy piggy = new Piggy(null, _account, 0, null, null, 0, shared, "unknown", _amount);
                 mPiggyApi.sharePiggyWith(piggy);
                 return null;
             };
